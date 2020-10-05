@@ -20,9 +20,13 @@ public class IntroductionScreen extends Screen {
 
     @Override
     public void initialize() {
+        /*
+        todo 
+        fix intro story
+         */
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
-        introLabel = new SpriteFont("Fluffy grew up in the house his whole life. \nHis master never let him outside because he said \nthere was monsters. Outside the window, Fluffy could see \nthat the world outside was beautify land of wonder. \nOne day his master forgot to close the door and \nFluffy decided to go outside. Before he knew it, \nhe was lost and struggling to find his way home...", 60, 140, "Times New Roman", 20, Color.white);
+        introLabel = new SpriteFont("Fluffy grew up in the house his whole life. \n\n\nHis master never let him outside because he said \n\n\nthere was monsters. Outside the window, Fluffy could see \n\n\nthat the world outside was beautify land of wonder. \n\n\nOne day his master forgot to close the door and \n\n\nFluffy decided to go outside. Before he knew it, \n\n\nhe was lost and struggling to find his way home...", 60, 700, "Times New Roman", 20, Color.white);
         startGameLabel = new SpriteFont("Press Space to start the game", 20, 560, "Times New Roman", 30, Color.white);
         keyLocker.lockKey(Key.SPACE);
     }
@@ -39,7 +43,7 @@ public class IntroductionScreen extends Screen {
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
             screenCoordinator.setGameState(GameState.LEVEL);
         }
-
+        introLabel.moveUp(0.5f);
     }
 
     @Override

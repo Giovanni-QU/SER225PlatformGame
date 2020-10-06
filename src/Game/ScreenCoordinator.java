@@ -4,6 +4,7 @@ import Engine.DefaultScreen;
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
+import Screens.InstructionScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
 
@@ -12,6 +13,10 @@ import Screens.PlayLevelScreen;
  * There can only be one "currentScreen", although screens can have "nested" screens
  */
 public class ScreenCoordinator extends Screen {
+	/*public enum GameState 
+	{
+		MENU, LEVEL, CREDITS, INSTRUCTIONS
+	}*/
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
 
@@ -27,7 +32,6 @@ public class ScreenCoordinator extends Screen {
 	public void setGameState(GameState gameState) {
 		this.gameState = gameState;
 	}
-
 	@Override
 	public void initialize() {
 		// start game off with Menu Screen
@@ -40,12 +44,16 @@ public class ScreenCoordinator extends Screen {
 			// if previousGameState does not equal gameState, it means there was a change in gameState
 			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
 			if (previousGameState != gameState) {
+				
 				switch(gameState) {
 					case MENU:
 						currentScreen = new MenuScreen(this);
 						break;
 					case LEVEL:
 						currentScreen = new PlayLevelScreen(this);
+						break;
+					case INSTRUCTIONS:
+						currentScreen = new InstructionScreen(this);
 						break;
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);

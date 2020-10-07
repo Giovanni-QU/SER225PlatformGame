@@ -19,7 +19,7 @@ import Utils.Point;
 public class Crab extends NPC {
 
 	public Crab(Point location, Map map) {
-		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24), "TAIL_DOWN", 5000);
+		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Crab.png"), 31, 31), "TAIL_DOWN", 5000);
 	}
 
 	@Override

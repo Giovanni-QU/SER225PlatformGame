@@ -53,7 +53,7 @@ public class TestMap extends Map {
 		ArrayList<NPC> npcs = new ArrayList<>();
 
 		npcs.add(new Walrus(getPositionByTileIndex(30, 10).subtract(new Point(0, 13)), this));
-		npcs.add(new Crab(getPositionByTileIndex(30, 10).subtract(new Point(-100, 13)), this));
+		npcs.add(new Crab(getPositionByTileIndex(30, 10).subtract(new Point(150, -80)), this));
 		return npcs;
 	}
 }

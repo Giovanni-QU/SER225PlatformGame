@@ -209,6 +209,23 @@ public abstract class Map {
         }
     }
 
+    //Getters and setters for the X boundaries
+    public int getStartBoundX () {
+        return startBoundX;
+    }
+
+    public void setStartBoundX(int newStartBound) {
+        startBoundX = newStartBound;
+    }
+
+    public int getEndBoundX () {
+        return endBoundX;
+    }
+
+    public void setEndBoundX(int newEndBound) {
+        endBoundX = newEndBound;
+    }
+
     // set specific map tile from tile map to a new map tile
     public void setMapTile(int x, int y, MapTile tile) {
         mapTiles[getConvertedIndex(x, y)] = tile;

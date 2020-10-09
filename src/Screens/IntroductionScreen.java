@@ -44,6 +44,9 @@ public class IntroductionScreen extends Screen {
             screenCoordinator.setGameState(GameState.LEVEL);
         }
         introLabel.moveUp(0.5f);
+        if (introLabel.getY() < -380) {
+            screenCoordinator.setGameState(GameState.LEVEL);
+        }
     }
 
     @Override

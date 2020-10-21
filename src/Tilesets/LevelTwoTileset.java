@@ -107,8 +107,8 @@ public class LevelTwoTileset extends Tileset {
 
         mapTiles.add(treeTopLeavesTile);
 
-        // yellow flower
-        Frame yellowFlowerFrame = new FrameBuilder(getSubImage(1, 4), 0)
+        // yellow flower changed from 1 to 0
+        Frame yellowFlowerFrame = new FrameBuilder(getSubImage(0, 4), 0)
                         .withScale(tileScale)
                         .build();
 

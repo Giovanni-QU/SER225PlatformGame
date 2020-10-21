@@ -6,9 +6,7 @@ import Maps.TitleScreenMap;
 import Maps.LevelTwo;
 
 import java.util.ArrayList;
-/*
-TODO: fix LevelOne to LevelTwo
- */
+
 public class EditorMaps {
     public static ArrayList<String> getMapNames() {
         return new ArrayList<String>() {{

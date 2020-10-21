@@ -32,9 +32,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void initialize() {
         // define/setup map
-        //TODO: make a map variable switch case for level
+
         switch (currentLevel) {
             case 0:
+                //TODO: Change this to desired map to start on that map
                 this.map = new TestMap();
                 map.reset();
                 break;
@@ -57,19 +58,16 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         switch (playLevelScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
-                //TODO: another switch case depending on the level?
                 player.update();
                 map.update(player);
                 break;
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
-                //TODO: if level counter is not higher than number of levels do this but set the next level
                 levelClearedScreen = new LevelClearedScreen();
                 levelClearedScreen.initialize();
                 screenTimer.setWaitTime(2500);
                 playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
                 currentLevel++;
-                System.out.println(currentLevel);
                 break;
             // if level cleared screen is up and the timer is up for how long it should stay out, go back to main menu
             case LEVEL_WIN_MESSAGE:
@@ -77,9 +75,12 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 if (screenTimer.isTimeUp()) {
                     levelClearedScreen = null;
                     //TODO: if statement to go back to main menu
-                    //goBackToMenu();
-                    playLevelScreenState = PlayLevelScreenState.RUNNING;
-                    this.initialize();
+                    if (currentLevel > 1) {
+                        goBackToMenu();
+                    } else {
+                        playLevelScreenState = PlayLevelScreenState.RUNNING;
+                        this.initialize();
+                    }
                 }
                 break;
             // if player died in level, bring up level lost screen

@@ -6,13 +6,15 @@ import Maps.TitleScreenMap;
 import Maps.LevelTwo;
 
 import java.util.ArrayList;
-
+/*
+TODO: fix LevelOne to LevelTwo
+ */
 public class EditorMaps {
     public static ArrayList<String> getMapNames() {
         return new ArrayList<String>() {{
             add("TestMap");
             add("TitleScreen");
-            add("LevelOne");
+            add("LevelTwo");
         }};
     }
 
@@ -22,7 +24,7 @@ public class EditorMaps {
                 return new TestMap();
             case "TitleScreen":
                 return new TitleScreenMap();
-            case "LevelOne":
+            case "LevelTwo":
                 return new LevelTwo();
             default:
                 throw new RuntimeException("Unrecognized map name");

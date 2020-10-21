@@ -2,17 +2,20 @@ package Screens;
 
 import Engine.GraphicsHandler;
 import Engine.Screen;
+import Game.Game;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
+import Maps.LevelTwo;
 import Maps.TestMap;
 import Players.Cat;
 import Utils.Stopwatch;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
+
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
@@ -20,6 +23,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected Stopwatch screenTimer = new Stopwatch();
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
+    protected int currentLevel = 0;
+
 
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -27,8 +32,18 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void initialize() {
         // define/setup map
-        this.map = new TestMap();
-        map.reset();
+
+        switch (currentLevel) {
+            case 0:
+                //TODO: Change this to desired map to start on that map
+                this.map = new TestMap();
+                map.reset();
+                break;
+            case 1:
+                this.map = new LevelTwo();
+                map.reset();
+                break;
+        }
 
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
@@ -52,12 +67,20 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 levelClearedScreen.initialize();
                 screenTimer.setWaitTime(2500);
                 playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
+                currentLevel++;
                 break;
             // if level cleared screen is up and the timer is up for how long it should stay out, go back to main menu
             case LEVEL_WIN_MESSAGE:
+                //TODO: change this to next level later
                 if (screenTimer.isTimeUp()) {
                     levelClearedScreen = null;
-                    goBackToMenu();
+                    //TODO: if statement to go back to main menu
+                    if (currentLevel > 1) {
+                        goBackToMenu();
+                    } else {
+                        playLevelScreenState = PlayLevelScreenState.RUNNING;
+                        this.initialize();
+                    }
                 }
                 break;
             // if player died in level, bring up level lost screen
@@ -113,8 +136,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         screenCoordinator.setGameState(GameState.MENU);
     }
 
+    public void goToNextLevel() { screenCoordinator.setGameState(GameState.LEVELTWO); }
+
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE
+        RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE,
     }
 }

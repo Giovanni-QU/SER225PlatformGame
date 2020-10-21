@@ -32,6 +32,7 @@ public class ScreenCoordinator extends Screen {
 	@Override
 	public void initialize() {
 		// start game off with Menu Screen
+		//TODO: Where to start off on your level
 		gameState = GameState.MENU;
 	}
 

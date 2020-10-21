@@ -81,6 +81,14 @@ public abstract class Player extends GameObject {
             super.moveXHandleCollision(moveAmountX);
 
             updateLockedKeys();
+
+            // boundaries stopping the cat from falling off the map
+            if (x <= super.getStartBoundX()) {
+                x = previousX;
+            }
+            else if (x >= super.getEndBoundX() - 60) {
+                x = previousX;
+            }
         }
 
         // if player has beaten level

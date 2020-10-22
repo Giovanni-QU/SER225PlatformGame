@@ -136,8 +136,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         screenCoordinator.setGameState(GameState.MENU);
     }
 
-    public void goToNextLevel() { screenCoordinator.setGameState(GameState.LEVELTWO); }
-
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
         RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE,

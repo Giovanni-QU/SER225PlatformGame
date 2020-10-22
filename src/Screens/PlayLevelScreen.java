@@ -1,7 +1,6 @@
 package Screens;
 
-import Engine.GraphicsHandler;
-import Engine.Screen;
+import Engine.*;
 import Game.Game;
 import Game.GameState;
 import Game.ScreenCoordinator;
@@ -11,7 +10,10 @@ import Level.PlayerListener;
 import Maps.LevelTwo;
 import Maps.TestMap;
 import Players.Cat;
+import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
+
+import java.awt.*;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
@@ -25,9 +27,18 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected LevelLoseScreen levelLoseScreen;
     protected int currentLevel = 0;
 
+    private boolean isGamePaused = false;
+    private SpriteFont pauseLabel;
+    private KeyLocker keyLocker = new KeyLocker();
+    private final Key pauseKey = Key.P;
+
 
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
+
+        pauseLabel = new SpriteFont("PAUSE", 365, 280, "Comic Sans", 24, Color.white);
+        pauseLabel.setOutlineColor(Color.black);
+        pauseLabel.setOutlineThickness(2.0f);
     }
 
     public void initialize() {
@@ -54,46 +65,58 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     }
 
     public void update() {
-        // based on screen state, perform specific actions
-        switch (playLevelScreenState) {
-            // if level is "running" update player and map to keep game logic for the platformer level going
-            case RUNNING:
-                player.update();
-                map.update(player);
-                break;
-            // if level has been completed, bring up level cleared screen
-            case LEVEL_COMPLETED:
-                levelClearedScreen = new LevelClearedScreen();
-                levelClearedScreen.initialize();
-                screenTimer.setWaitTime(2500);
-                playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
-                currentLevel++;
-                break;
-            // if level cleared screen is up and the timer is up for how long it should stay out, go back to main menu
-            case LEVEL_WIN_MESSAGE:
-                //TODO: change this to next level later
-                if (screenTimer.isTimeUp()) {
-                    levelClearedScreen = null;
-                    //TODO: if statement to go back to main menu
-                    if (currentLevel > 1) {
-                        goBackToMenu();
-                    } else {
-                        playLevelScreenState = PlayLevelScreenState.RUNNING;
-                        this.initialize();
-                    }
-                }
-                break;
-            // if player died in level, bring up level lost screen
-            case PLAYER_DEAD:
-                levelLoseScreen = new LevelLoseScreen(this);
-                levelLoseScreen.initialize();
-                playLevelScreenState = PlayLevelScreenState.LEVEL_LOSE_MESSAGE;
-                break;
-            // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
-            case LEVEL_LOSE_MESSAGE:
-                levelLoseScreen.update();
-                break;
+        if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
+            isGamePaused = !isGamePaused;
+            keyLocker.lockKey(pauseKey);
         }
+
+        if (Keyboard.isKeyUp(pauseKey)) {
+            keyLocker.unlockKey(pauseKey);
+        }
+
+        if (!isGamePaused) {
+            // based on screen state, perform specific actions
+            switch (playLevelScreenState) {
+                // if level is "running" update player and map to keep game logic for the platformer level going
+                case RUNNING:
+                    player.update();
+                    map.update(player);
+                    break;
+                // if level has been completed, bring up level cleared screen
+                case LEVEL_COMPLETED:
+                    levelClearedScreen = new LevelClearedScreen();
+                    levelClearedScreen.initialize();
+                    screenTimer.setWaitTime(2500);
+                    playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
+                    currentLevel++;
+                    break;
+                // if level cleared screen is up and the timer is up for how long it should stay out, go back to main menu
+                case LEVEL_WIN_MESSAGE:
+                    //TODO: change this to next level later
+                    if (screenTimer.isTimeUp()) {
+                        levelClearedScreen = null;
+                        //TODO: if statement to go back to main menu
+                        if (currentLevel > 1) {
+                            goBackToMenu();
+                        } else {
+                            playLevelScreenState = PlayLevelScreenState.RUNNING;
+                            this.initialize();
+                        }
+                    }
+                    break;
+                // if player died in level, bring up level lost screen
+                case PLAYER_DEAD:
+                    levelLoseScreen = new LevelLoseScreen(this);
+                    levelLoseScreen.initialize();
+                    playLevelScreenState = PlayLevelScreenState.LEVEL_LOSE_MESSAGE;
+                    break;
+                // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
+                case LEVEL_LOSE_MESSAGE:
+                    levelLoseScreen.update();
+                    break;
+            }
+        }
+
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
@@ -111,6 +134,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_LOSE_MESSAGE:
                 levelLoseScreen.draw(graphicsHandler);
                 break;
+        }
+        if (isGamePaused) {
+            pauseLabel.draw(graphicsHandler);
+            graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), new Color(0, 0, 0, 100));
         }
     }
 

@@ -1,7 +1,6 @@
 package Engine;
 
 import GameObject.Rectangle;
-import SpriteFont.SpriteFont;
 import Utils.Colors;
 
 import javax.swing.*;
@@ -25,10 +24,6 @@ public class GamePanel extends JPanel {
 	private GraphicsHandler graphicsHandler;
 
 	private boolean doPaint = false;
-	private boolean isGamePaused = false;
-	private SpriteFont pauseLabel;
-	private KeyLocker keyLocker = new KeyLocker();
-	private final Key pauseKey = Key.P;
 
 	/*
 	 * The JPanel and various important class instances are setup here
@@ -43,10 +38,6 @@ public class GamePanel extends JPanel {
 		graphicsHandler = new GraphicsHandler();
 
 		screenManager = new ScreenManager();
-		
-		pauseLabel = new SpriteFont("PAUSE", 365, 280, "Comic Sans", 24, Color.white);
-		pauseLabel.setOutlineColor(Color.black);
-		pauseLabel.setOutlineThickness(2.0f);
 
 		// Every timer "tick" will call the update method as well as tell the JPanel to repaint
 		// Remember that repaint "schedules" a paint rather than carries it out immediately
@@ -78,28 +69,12 @@ public class GamePanel extends JPanel {
 	}
 
 	public void update() {
-		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
-			isGamePaused = !isGamePaused;
-			keyLocker.lockKey(pauseKey);
-		}
-		
-		if (Keyboard.isKeyUp(pauseKey)) {
-			keyLocker.unlockKey(pauseKey);
-		}
-
-		if (!isGamePaused) {
 			screenManager.update();
-		}
 	}
 
 	public void draw() {
 		screenManager.draw(graphicsHandler);
 
-		// if game is paused, draw pause gfx over Screen gfx
-		if (isGamePaused) {
-			pauseLabel.draw(graphicsHandler);
-			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), new Color(0, 0, 0, 100));
-		}
 	}
 
 	@Override

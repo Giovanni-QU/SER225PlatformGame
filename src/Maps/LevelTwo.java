@@ -18,6 +18,7 @@ import Utils.Point;
 
 import java.util.ArrayList;
 
+//TODO: Add an NPC to warn the player of upcoming jumping obs
 public class LevelTwo extends Map {
 
     public LevelTwo() {

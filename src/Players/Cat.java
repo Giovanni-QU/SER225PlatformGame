@@ -8,6 +8,7 @@ import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Player;
+import Tilesets.CommonTileset;
 
 import java.util.HashMap;
 
@@ -21,7 +22,7 @@ public class Cat extends Player {
         terminalVelocityY = 6f;
         jumpHeight = 14.5f;
         jumpDegrade = .5f;
-        walkSpeed = 2.1f;
+        walkSpeed = 2.5f;
         momentumYIncrease = .5f;
         JUMP_KEY = Key.UP;
         MOVE_LEFT_KEY = Key.LEFT;
@@ -30,6 +31,14 @@ public class Cat extends Player {
     }
 
     public void update() {
+        // if cat enters water, its speed is slower
+        if (y > 522) {
+            walkSpeed = 1.5f;
+            terminalVelocityY = 1.5f;
+        } else {
+            walkSpeed = 2.5f;
+            terminalVelocityY = 6f;
+        }
         super.update();
     }
 

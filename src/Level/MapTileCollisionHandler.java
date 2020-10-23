@@ -72,7 +72,9 @@ public class MapTileCollisionHandler {
         switch (mapTile.getTileType()) {
             case PASSABLE:
                 return false;
-            case NOT_PASSABLE:
+            case WATER:
+                return false;
+             case NOT_PASSABLE:
                 return gameObject.intersects(mapTile);
             case JUMP_THROUGH_PLATFORM:
                 return direction == Direction.DOWN && gameObject.intersects(mapTile) &&

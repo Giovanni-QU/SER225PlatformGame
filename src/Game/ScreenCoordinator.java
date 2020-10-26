@@ -5,6 +5,7 @@ import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
 import Screens.IntroductionScreen;
+import Screens.InstructionScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
 
@@ -48,6 +49,9 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case MENU:
 						currentScreen = new MenuScreen(this);
+						break;
+					case INSTRUCTIONS:
+						currentScreen = new InstructionScreen(this);
 						break;
 					case LEVEL:
 						currentScreen = new PlayLevelScreen(this);

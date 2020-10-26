@@ -44,6 +44,7 @@ public abstract class Player extends GameObject {
     protected Key CROUCH_KEY = Key.DOWN;
 
     // if true, player cannot be hurt by enemies (good for testing)
+    //TODO: Where to set god mode
     protected boolean isInvincible = false;
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
@@ -80,6 +81,14 @@ public abstract class Player extends GameObject {
             super.moveXHandleCollision(moveAmountX);
 
             updateLockedKeys();
+
+            // boundaries stopping the cat from falling off the map
+            if (x <= super.getStartBoundX()) {
+                x = previousX;
+            }
+            else if (x >= super.getEndBoundX() - 60) {
+                x = previousX;
+            }
         }
 
         // if player has beaten level

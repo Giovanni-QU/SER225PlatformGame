@@ -17,7 +17,6 @@ import java.awt.*;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
-
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
@@ -31,7 +30,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private SpriteFont pauseLabel;
     private KeyLocker keyLocker = new KeyLocker();
     private final Key pauseKey = Key.P;
-    
+
     //Pause Screen Info and Buttons
     protected int currentMenuItemHovered = 1; // current menu item being "hovered" over
     protected int menuItemSelected = -1;
@@ -48,7 +47,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
-        
+
         //Pause Screen Initialization
         pauseHeader = new SpriteFont("PAUSED", 300, 100, "Comic Sans", 50, new Color(255, 255, 255));
         pauseHeader.setOutlineColor(Color.black);
@@ -141,31 +140,31 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     break;
             }
         }
-        if(isGamePaused == true) 
+        if(isGamePaused == true)
         {
-        	if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp()) 
+        	if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp())
         	{
         		keyTimer.reset();
         		currentMenuItemHovered++;
-        	} 
-        	else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp()) 
+        	}
+        	else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp())
         	{
         		keyTimer.reset();
         		currentMenuItemHovered--;
         	}
 
         // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
-        if (currentMenuItemHovered > 1) 
+        if (currentMenuItemHovered > 1)
         {
         	currentMenuItemHovered = 2;
         }
-        else if (currentMenuItemHovered < 0) 
+        else if (currentMenuItemHovered < 0)
         {
             currentMenuItemHovered = 0;
         }
 
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
-        if (currentMenuItemHovered == 1) 
+        if (currentMenuItemHovered == 1)
         {
         	pauseHeader.setColor(new Color(255, 255, 255));
         	settingsButton.setColor(new Color(255, 215, 0));
@@ -173,7 +172,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             pointerLocationX = 170;
             pointerLocationY = 205;
         }
-        else if (currentMenuItemHovered == 2) 
+        else if (currentMenuItemHovered == 2)
         {
         	pauseHeader.setColor(new Color(255, 255, 255));
         	settingsButton.setColor(new Color(49, 207, 240));
@@ -181,26 +180,26 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             pointerLocationX = 170;
             pointerLocationY = 280;
         }
-        if (Keyboard.isKeyUp(Key.SPACE)) 
+        if (Keyboard.isKeyUp(Key.SPACE))
         {
             keyLocker.unlockKey(Key.SPACE);
         }
-        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) 
+        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE))
         {
         	keyLocker.lockKey(Key.SPACE);
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 1)
             {
-            	if(settingsActive == false) 
+            	if(settingsActive == false)
             	{
             		settingsActive = true;
             	}
-            	else if(settingsActive == true) 
+            	else if(settingsActive == true)
             	{
             		settingsActive = false;
             	}
             }
-            else if (menuItemSelected == 2) 
+            else if (menuItemSelected == 2)
             {
                 screenCoordinator.setGameState(GameState.MENU);
             }
@@ -224,19 +223,19 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 levelLoseScreen.draw(graphicsHandler);
                 break;
         }
-        if (isGamePaused) 
+        if (isGamePaused)
         {
             graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), new Color(0, 0, 0, 100));
             pauseHeader.draw(graphicsHandler);
             settingsButton.draw(graphicsHandler);
             mainMenuButton.draw(graphicsHandler);
-            if(settingsActive == false) 
+            if(settingsActive == false)
         	{
             	pauseHeader.draw(graphicsHandler);
                 settingsButton.draw(graphicsHandler);
                 mainMenuButton.draw(graphicsHandler);
         	}
-        	else if(settingsActive == true) 
+        	else if(settingsActive == true)
         	{
         		volumeLevel.draw(graphicsHandler);
         		aspectRatioLevel.draw(graphicsHandler);
@@ -269,7 +268,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         screenCoordinator.setGameState(GameState.MENU);
     }
 
-    public void goToNextLevel() { screenCoordinator.setGameState(GameState.LEVELTWO); }
 
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {

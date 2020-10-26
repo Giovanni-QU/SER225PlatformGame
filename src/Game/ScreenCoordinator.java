@@ -4,6 +4,8 @@ import Engine.DefaultScreen;
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
+import Screens.IntroductionScreen;
+import Screens.InstructionScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
 
@@ -31,6 +33,7 @@ public class ScreenCoordinator extends Screen {
 	@Override
 	public void initialize() {
 		// start game off with Menu Screen
+		//TODO: Where to start off on your level
 		gameState = GameState.MENU;
 	}
 
@@ -41,8 +44,14 @@ public class ScreenCoordinator extends Screen {
 			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
 			if (previousGameState != gameState) {
 				switch(gameState) {
+					case INTRO:
+						currentScreen = new IntroductionScreen(this);
+						break;
 					case MENU:
 						currentScreen = new MenuScreen(this);
+						break;
+					case INSTRUCTIONS:
+						currentScreen = new InstructionScreen(this);
 						break;
 					case LEVEL:
 						currentScreen = new PlayLevelScreen(this);

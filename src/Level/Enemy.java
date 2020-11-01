@@ -55,4 +55,16 @@ public class Enemy extends MapEntity {
     public void touchedPlayer(Player player) {
         player.hurtPlayer(this);
     }
+
+    public void touchedEnemy(Enemy enemy) {
+        enemy.hurtEnemy(this);
+    }
+
+    //extend enemy class.
+    public void hurtEnemy(MapEntity mapEntity) {
+        if (mapEntity instanceof PowerUp) {
+            //TODO: figure out how to kill the enemy. When the powerup intersects the enemy delete it
+            System.out.println("This hit the enemy");
+        }
+    }
 }

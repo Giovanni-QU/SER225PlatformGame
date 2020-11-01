@@ -42,6 +42,8 @@ public abstract class Player extends GameObject {
     protected Key MOVE_LEFT_KEY = Key.LEFT;
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
+    //powerup attack
+    protected Key POWERUP_ONE_KEY = Key.ONE;
 
     // if true, player cannot be hurt by enemies (good for testing)
     //TODO: Where to set god mode
@@ -122,6 +124,9 @@ public abstract class Player extends GameObject {
             case JUMPING:
                 playerJumping();
                 break;
+            case POWERUP_ONE:
+                playerPowerUp();
+                break;
         }
     }
 
@@ -144,6 +149,9 @@ public abstract class Player extends GameObject {
         // if crouch key is pressed, player enters CROUCHING state
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
+        } else if (Keyboard.isKeyDown(POWERUP_ONE_KEY)) { //TODO: added this
+            System.out.println("Triggering powerup in playerStanding Method");
+            playerState = PlayerState.POWERUP_ONE;
         }
     }
 
@@ -192,6 +200,20 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
+        }
+    }
+
+    /*
+    TODO: add to other playerlisteners simliar to standing method. this can trigger in any state
+
+     */
+    protected void playerPowerUp() {
+        System.out.println("IN playerPowerUp METHOD");
+        if (Keyboard.isKeyUp(POWERUP_ONE_KEY)) {
+            playerState = PlayerState.STANDING;
+        }
+        if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
+            System.out.println("SHOOTING POWERUP");
         }
     }
 

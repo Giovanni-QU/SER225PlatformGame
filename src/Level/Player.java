@@ -6,9 +6,7 @@ import Engine.Keyboard;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Players.Hairball;
-import Utils.AirGroundState;
-import Utils.Direction;
-import Utils.Point;
+import Utils.*;
 
 import java.util.ArrayList;
 
@@ -33,6 +31,8 @@ public abstract class Player extends GameObject {
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
     protected AirGroundState previousAirGroundState;
+    protected PowerState powerState;
+    protected PowerState previousPowerState;
     protected LevelState levelState;
 
     // classes that listen to player events can be added to this list
@@ -46,6 +46,7 @@ public abstract class Player extends GameObject {
     protected Key CROUCH_KEY = Key.DOWN;
     //powerup attack
     protected Key POWERUP_ONE_KEY = Key.ONE;
+    protected Stopwatch coolDownTimer = new Stopwatch();
 
     // if true, player cannot be hurt by enemies (good for testing)
     //TODO: Where to set god mode
@@ -58,6 +59,8 @@ public abstract class Player extends GameObject {
         previousAirGroundState = airGroundState;
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
+        powerState = PowerState.SAFE;
+        previousPowerState = powerState;
         levelState = LevelState.RUNNING;
     }
 
@@ -76,6 +79,7 @@ public abstract class Player extends GameObject {
             } while (previousPlayerState != playerState);
 
             previousAirGroundState = airGroundState;
+            previousPowerState = powerState;
 
             // update player's animation
             super.update();
@@ -151,8 +155,9 @@ public abstract class Player extends GameObject {
         // if crouch key is pressed, player enters CROUCHING state
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
-        } else if (Keyboard.isKeyDown(POWERUP_ONE_KEY)) { //TODO: added this
+        } else if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) { //TODO: added this
             System.out.println("Triggering powerup in playerStanding Method");
+            powerState = PowerState.SAFE;
             playerState = PlayerState.POWERUP_ONE;
         }
     }
@@ -174,6 +179,12 @@ public abstract class Player extends GameObject {
             facingDirection = Direction.RIGHT;
         } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.STANDING;
+        }
+
+        if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) { //TODO: added this
+            System.out.println("Triggering powerup in playerStanding Method");
+            powerState = PowerState.SAFE;
+            playerState = PlayerState.POWERUP_ONE;
         }
 
         // if jump key is pressed, player enters JUMPING state
@@ -206,46 +217,49 @@ public abstract class Player extends GameObject {
     }
 
     /*
-    TODO: add to other playerlisteners simliar to standing method. this can trigger in any state
+    TODO: add to other playerlisteners simliar to standing method. this can trigger in any state, if the hairball still exists then dont shoot
+
 
      */
     protected void playerPowerUp() {
-        int hairballX;
-        float movementSpeed;
-        if (facingDirection == Direction.RIGHT) {
-            hairballX = Math.round(getX()) + getScaledWidth();
-            movementSpeed = 1.5f;
-        } else {
-            hairballX = Math.round(getX());
-            movementSpeed = -1.5f;
+
+        if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
+            System.out.println("SHOOTING HAIRBALL");
+            int hairballX;
+            float movementSpeed;
+            if (facingDirection == Direction.RIGHT) {
+                hairballX = Math.round(getX()) + getScaledWidth();
+                movementSpeed = 1.5f;
+            } else {
+                hairballX = Math.round(getX());
+                movementSpeed = -1.5f;
+            }
+
+            // define where hairball will spawn on the map (y location) relative to player's location
+            int hairballY = Math.round(getY()) + 20;
+
+            //create a Hairball enemy
+            Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
+
+            // add hairball enemy to the map for it to offically spawn in the level
+            map.addEnemy(hairball);
+            powerState = PowerState.FIRE;
         }
 
-        /*
-        TODO: set a timer cooldown on when they can fire another hairball
-         */
-        // define where hairball will spawn on the map (y location) relative to player's location
-        int hairballY = Math.round(getY()) + 4;
-
-        //create a Hairball enemy
-        Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
-
-        // add hairball enemy to the map for it to offically spawn in the level
-        map.addEnemy(hairball);
-
-        System.out.println("IN playerPowerUp METHOD");
         if (Keyboard.isKeyUp(POWERUP_ONE_KEY)) {
             playerState = PlayerState.STANDING;
         }
-        if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
-            System.out.println("SHOOTING POWERUP");
-        }
+//        if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
+//            System.out.println("SHOOTING POWERUP");
+//        }
     }
 
     // player JUMPING state logic
     protected void playerJumping() {
+
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
-
+            System.out.println("jumping");
             // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
@@ -263,6 +277,7 @@ public abstract class Player extends GameObject {
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
+            System.out.println("in the air");
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
                 jumpForce -= jumpDegrade;
@@ -308,6 +323,9 @@ public abstract class Player extends GameObject {
     protected void updateLockedKeys() {
         if (Keyboard.isKeyUp(JUMP_KEY)) {
             keyLocker.unlockKey(JUMP_KEY);
+        }
+        if (Keyboard.isKeyUp(POWERUP_ONE_KEY)) {
+            keyLocker.unlockKey(POWERUP_ONE_KEY);
         }
     }
 

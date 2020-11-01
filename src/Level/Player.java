@@ -5,8 +5,10 @@ import Engine.KeyLocker;
 import Engine.Keyboard;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
+import Players.Hairball;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
 
 import java.util.ArrayList;
 
@@ -208,6 +210,28 @@ public abstract class Player extends GameObject {
 
      */
     protected void playerPowerUp() {
+        int hairballX;
+        float movementSpeed;
+        if (facingDirection == Direction.RIGHT) {
+            hairballX = Math.round(getX()) + getScaledWidth();
+            movementSpeed = 1.5f;
+        } else {
+            hairballX = Math.round(getX());
+            movementSpeed = -1.5f;
+        }
+
+        /*
+        TODO: set a timer cooldown on when they can fire another hairball
+         */
+        // define where hairball will spawn on the map (y location) relative to player's location
+        int hairballY = Math.round(getY()) + 4;
+
+        //create a Hairball enemy
+        Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
+
+        // add hairball enemy to the map for it to offically spawn in the level
+        map.addEnemy(hairball);
+
         System.out.println("IN playerPowerUp METHOD");
         if (Keyboard.isKeyUp(POWERUP_ONE_KEY)) {
             playerState = PlayerState.STANDING;

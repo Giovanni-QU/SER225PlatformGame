@@ -82,7 +82,9 @@ public class Camera extends Rectangle {
             /*
             TODO: fail here on update
              */
-            powerUp.update();
+            for (Enemy enemy : activeEnemies) {
+                powerUp.update(enemy);
+            }
         }
 
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
@@ -244,6 +246,11 @@ public class Camera extends Rectangle {
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
             if (containsDraw(enhancedMapTile)) {
                 enhancedMapTile.draw(graphicsHandler);
+            }
+        }
+        for (PowerUp powerUp: activePowerUps) {
+            if (containsDraw(powerUp)) {
+                powerUp.draw(graphicsHandler);
             }
         }
         for (NPC npc : activeNPCs) {

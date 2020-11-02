@@ -63,8 +63,9 @@ public class Enemy extends MapEntity {
     //extend enemy class.
     public void hurtEnemy(MapEntity mapEntity) {
         if (mapEntity instanceof PowerUp) {
-            //TODO: figure out how to kill the enemy. When the powerup intersects the enemy delete it
+            //TODO: figure out how to kill the enemy. When the powerup intersects the enemy delete it. Start here
             System.out.println("This hit the enemy");
+            this.mapEntityStatus = MapEntityStatus.REMOVED;
         }
     }
 }

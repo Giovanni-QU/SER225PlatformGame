@@ -182,7 +182,6 @@ public abstract class Player extends GameObject {
         }
 
         if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) { //TODO: added this
-            System.out.println("Triggering powerup in playerStanding Method");
             powerState = PowerState.SAFE;
             playerState = PlayerState.POWERUP_ONE;
         }
@@ -242,7 +241,7 @@ public abstract class Player extends GameObject {
             Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
 
             // add hairball enemy to the map for it to offically spawn in the level
-            map.addEnemy(hairball);
+            map.addPowerUp(hairball);
             powerState = PowerState.FIRE;
         }
 
@@ -259,7 +258,6 @@ public abstract class Player extends GameObject {
 
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
-            System.out.println("jumping");
             // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
@@ -277,7 +275,6 @@ public abstract class Player extends GameObject {
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
-            System.out.println("in the air");
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
                 jumpForce -= jumpDegrade;

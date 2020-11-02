@@ -7,13 +7,14 @@ import GameObject.SpriteSheet;
 import Level.Enemy;
 import Level.MapEntityStatus;
 import Level.Player;
+import Level.PowerUp;
 import Utils.Direction;
 import Utils.Point;
 import Utils.Stopwatch;
 
 import java.util.HashMap;
 
-public class Hairball extends Enemy {
+public class Hairball extends PowerUp {
     private float movementSpeed;
     private Stopwatch existenceTimer = new Stopwatch();
 
@@ -27,7 +28,7 @@ public class Hairball extends Enemy {
     }
 
     @Override
-    public void update(Player player) {
+    public void update(Enemy enemy) {
         // if timer is up, set map entity status to REMOVED
         // the camera class will see this next frame and remove it permanently from the map
         if (existenceTimer.isTimeUp()) {
@@ -35,7 +36,7 @@ public class Hairball extends Enemy {
         } else {
             // move fireball forward
             moveXHandleCollision(movementSpeed);
-            super.update(player);
+            super.update(enemy);
         }
     }
 
@@ -47,17 +48,10 @@ public class Hairball extends Enemy {
         }
     }
 
-    @Override
-    public void touchedPlayer(Player player) {
-//        // if fireball touches player, it disappears
-//        super.touchedPlayer(player);
-//        this.mapEntityStatus = MapEntityStatus.REMOVED;
-
-    }
 
     @Override
     public void touchedEnemy(Enemy enemy) {
-        super.hurtEnemy(enemy);
+        super.touchedEnemy(enemy);
         this.mapEntityStatus = MapEntityStatus.REMOVED;
     }
 

@@ -1,7 +1,6 @@
 package Screens;
 
 import Engine.*;
-import Game.Game;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.Map;
@@ -84,6 +83,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        if (currentLevel > 0) {
+            player.unlockPowerUpOne();
+        }
         this.player.setMap(map);
         this.player.addListener(this);
         this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);

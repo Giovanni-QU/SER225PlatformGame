@@ -24,6 +24,7 @@ public class Camera extends Rectangle {
 
     // current map entities that are to be included in this frame's update/draw cycle
     private ArrayList<Enemy> activeEnemies = new ArrayList<>();
+    private ArrayList<PowerUp> activePowerUps = new ArrayList<>();
     private ArrayList<EnhancedMapTile> activeEnhancedMapTiles = new ArrayList<>();
     private ArrayList<NPC> activeNPCs = new ArrayList<>();
 
@@ -69,11 +70,21 @@ public class Camera extends Rectangle {
     // active entities are calculated each frame using the loadActiveEntity methods below
     public void updateMapEntities(Player player) {
         activeEnemies = loadActiveEnemies();
+        activePowerUps = loadActivePowerUps();
         activeEnhancedMapTiles = loadActiveEnhancedMapTiles();
         activeNPCs = loadActiveNPCs();
 
         for (Enemy enemy : activeEnemies) {
             enemy.update(player);
+        }
+
+        for (PowerUp powerUp : activePowerUps) {
+            /*
+            TODO: Possible BUG here. If there are no enemies in the camera view then the hairball stays in place.
+             */
+            for (Enemy enemy : activeEnemies) {
+                powerUp.update(enemy);
+            }
         }
 
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
@@ -112,6 +123,28 @@ public class Camera extends Rectangle {
             }
         }
         return activeEnemies;
+    }
+
+    private ArrayList<PowerUp> loadActivePowerUps() {
+        ArrayList<PowerUp> activePowerUps = new ArrayList<>();
+        for (int i = map.getPowerUps().size() - 1; i >= 0; i--) {
+            PowerUp powerUp = map.getPowerUps().get(i);
+
+            if (isMapEntityActive(powerUp)) {
+                activePowerUps.add(powerUp);
+                if (powerUp.mapEntityStatus == MapEntityStatus.INACTIVE) {
+                    powerUp.setMapEntityStatus(MapEntityStatus.ACTIVE);
+                }
+            } else if (powerUp.getMapEntityStatus() == MapEntityStatus.ACTIVE) {
+                powerUp.setMapEntityStatus(MapEntityStatus.INACTIVE);
+                if (powerUp.isRespawnable()) {
+                    powerUp.initialize();
+                }
+            } else if (powerUp.getMapEntityStatus() == MapEntityStatus.REMOVED) {
+                map.getPowerUps().remove(i);
+            }
+        }
+        return activePowerUps;
     }
 
     // determine which enhanced map tiles are active (within range of the camera)
@@ -213,6 +246,11 @@ public class Camera extends Rectangle {
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
             if (containsDraw(enhancedMapTile)) {
                 enhancedMapTile.draw(graphicsHandler);
+            }
+        }
+        for (PowerUp powerUp: activePowerUps) {
+            if (containsDraw(powerUp)) {
+                powerUp.draw(graphicsHandler);
             }
         }
         for (NPC npc : activeNPCs) {

@@ -27,12 +27,17 @@ public class LevelTwo extends Map {
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
+        enemies.add(new BugEnemy(getPositionByTileIndex(8, 18), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(21, 18), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(29, 18), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(81, 18), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(60, 22), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(42, 22), Direction.LEFT));
 
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(21, 12).addY(2), getPositionByTileIndex(24, 12).addY(2), Direction.RIGHT));
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(61, 15).addY(2), getPositionByTileIndex(64, 15).addY(2), Direction.RIGHT));
+        enemies.add(new DinosaurEnemy(getPositionByTileIndex(113, 18).addY(2), getPositionByTileIndex(117, 18).addY(2), Direction.LEFT));
+        enemies.add(new DinosaurEnemy(getPositionByTileIndex(93, 11).addY(2), getPositionByTileIndex(97, 11).addY(2), Direction.LEFT));
         return enemies;
     }
 

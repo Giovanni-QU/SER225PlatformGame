@@ -80,7 +80,7 @@ public class Camera extends Rectangle {
 
         for (PowerUp powerUp : activePowerUps) {
             /*
-            TODO: fail here on update
+            TODO: Possible BUG here. If there are no enemies in the camera view then the hairball stays in place.
              */
             for (Enemy enemy : activeEnemies) {
                 powerUp.update(enemy);

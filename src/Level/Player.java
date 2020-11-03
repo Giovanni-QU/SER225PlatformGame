@@ -34,6 +34,7 @@ public abstract class Player extends GameObject {
     protected PowerState powerState;
     protected PowerState previousPowerState;
     protected LevelState levelState;
+    protected boolean unlockedPowerUpOne = false;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -140,7 +141,6 @@ public abstract class Player extends GameObject {
     protected void playerStanding() {
         // sets animation to a STAND animation based on which way player is facing
         currentAnimationName = facingDirection == Direction.RIGHT ? "STAND_RIGHT" : "STAND_LEFT";
-
         // if walk left or walk right key is pressed, player enters WALKING state
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.WALKING;
@@ -155,10 +155,13 @@ public abstract class Player extends GameObject {
         // if crouch key is pressed, player enters CROUCHING state
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
-        } else if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
-            powerState = PowerState.SAFE;
-            playerState = PlayerState.POWERUP_ONE;
+        } else if (getUnlockedPowerUpOne()) {
+            if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
+                powerState = PowerState.SAFE;
+                playerState = PlayerState.POWERUP_ONE;
+            }
         }
+
     }
 
     // player WALKING state logic
@@ -180,10 +183,10 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.STANDING;
         }
 
-        if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) { //TODO: added this
-            powerState = PowerState.SAFE;
-            playerState = PlayerState.POWERUP_ONE;
-        }
+//        if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) { //TODO: added this
+//            powerState = PowerState.SAFE;
+//            playerState = PlayerState.POWERUP_ONE;
+//        }
 
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
@@ -222,7 +225,6 @@ public abstract class Player extends GameObject {
     protected void playerPowerUp() {
 
         if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
-            System.out.println("SHOOTING HAIRBALL");
             int hairballX;
             float movementSpeed;
             if (facingDirection == Direction.RIGHT) {
@@ -247,9 +249,6 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyUp(POWERUP_ONE_KEY)) {
             playerState = PlayerState.STANDING;
         }
-//        if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
-//            System.out.println("SHOOTING POWERUP");
-//        }
     }
 
     // player JUMPING state logic
@@ -445,4 +444,10 @@ public abstract class Player extends GameObject {
     public void addListener(PlayerListener listener) {
         listeners.add(listener);
     }
+
+    public boolean getUnlockedPowerUpOne() { return unlockedPowerUpOne; }
+
+    public void unlockPowerUpOne() { unlockedPowerUpOne = true; }
+
+
 }

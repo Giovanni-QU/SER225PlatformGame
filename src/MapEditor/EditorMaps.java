@@ -16,6 +16,7 @@ public class EditorMaps {
         }};
     }
 
+    //TODO: Add level 3
     public static Map getMapByName(String mapName) {
         switch(mapName) {
             case "TestMap":

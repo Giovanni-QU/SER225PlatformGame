@@ -246,7 +246,7 @@ public class MasterMapTileset  extends Tileset {
                 .build();
 
         MapTileBuilder glassTile = new MapTileBuilder(glassFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+                .withTileType(TileType.PASSABLE);
 
         mapTiles.add(glassTile);
 
@@ -316,7 +316,7 @@ public class MasterMapTileset  extends Tileset {
                 .build();
 
         MapTileBuilder houseTile = new MapTileBuilder(houseFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+                .withTileType(TileType.PASSABLE);
 
         mapTiles.add(houseTile);
 
@@ -326,7 +326,7 @@ public class MasterMapTileset  extends Tileset {
                 .build();
 
         MapTileBuilder houseTwoTile = new MapTileBuilder(houseTwoFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+                .withTileType(TileType.PASSABLE);
 
         mapTiles.add(houseTwoTile);
 
@@ -336,7 +336,7 @@ public class MasterMapTileset  extends Tileset {
                 .build();
 
         MapTileBuilder doorKnobTile = new MapTileBuilder(doorKnobFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+                .withTileType(TileType.PASSABLE);
 
         mapTiles.add(doorKnobTile);
 
@@ -346,7 +346,7 @@ public class MasterMapTileset  extends Tileset {
                 .build();
 
         MapTileBuilder roofTile = new MapTileBuilder(roofFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+                .withTileType(TileType.PASSABLE);
 
         mapTiles.add(roofTile);
 

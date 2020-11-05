@@ -1,6 +1,7 @@
 package MapEditor;
 
 import Level.Map;
+import Maps.LevelThree;
 import Maps.TestMap;
 import Maps.TitleScreenMap;
 import Maps.LevelTwo;
@@ -13,10 +14,11 @@ public class EditorMaps {
             add("TestMap");
             add("TitleScreen");
             add("LevelTwo");
+            add("LevelThree");
         }};
     }
 
-    //TODO: Add level 3
+    //TODO: Add level 4
     public static Map getMapByName(String mapName) {
         switch(mapName) {
             case "TestMap":
@@ -25,6 +27,8 @@ public class EditorMaps {
                 return new TitleScreenMap();
             case "LevelTwo":
                 return new LevelTwo();
+            case "LevelThree":
+                return new LevelThree();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

@@ -341,7 +341,7 @@ public class MasterMapTileset  extends Tileset {
         mapTiles.add(doorKnobTile);
 
         // roof
-        Frame roofFrame = new FrameBuilder(getSubImage(2, 9), 0)
+        Frame roofFrame = new FrameBuilder(getSubImage(2, 10), 0)
                 .withScale(tileScale)
                 .build();
 

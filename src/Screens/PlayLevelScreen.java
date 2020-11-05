@@ -6,6 +6,7 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
+import Maps.LevelThree;
 import Maps.LevelTwo;
 import Maps.TestMap;
 import Players.Cat;
@@ -72,13 +73,17 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         switch (currentLevel) {
             case 0:
                 //TODO: Change this to desired map to start on that map
-                this.map = new TestMap();
+                this.map = new LevelThree();
                 map.reset();
                 break;
             case 1:
                 this.map = new LevelTwo();
                 map.reset();
                 break;
+//            case 2:
+//                this.map = new LevelThree();
+//                map.reset();
+//                break;
         }
 
         // setup player

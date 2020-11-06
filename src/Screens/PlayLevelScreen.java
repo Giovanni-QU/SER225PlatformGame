@@ -127,7 +127,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 case LEVEL_WIN_MESSAGE:
                     if (screenTimer.isTimeUp()) {
                         levelClearedScreen = null;
-                        if (currentLevel > 1) {
+                        //TODO: Update this if another level is added
+                        if (currentLevel > 2) {
                             goBackToMenu();
                         } else {
                             playLevelScreenState = PlayLevelScreenState.RUNNING;

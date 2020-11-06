@@ -15,17 +15,24 @@ import java.util.ArrayList;
 
 public class LevelThree extends Map {
     public LevelThree() {
-        super("level_three.txt", new MasterMapTileset(), new Point(1, 44)); //change this point location to change were you start on the map
+        super("level_three.txt", new MasterMapTileset(), new Point(1, 44));
     }
 
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
         // bug enemies
+        enemies.add(new BugEnemy(getPositionByTileIndex(30, 45), Direction.RIGHT));
         enemies.add(new BugEnemy(getPositionByTileIndex(20, 44), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(24, 44), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(53, 39), Direction.RIGHT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(78, 16), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(74, 8), Direction.RIGHT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(84, 8), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(89, 10), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(106, 48), Direction.LEFT));
         // dragon enemies
+        enemies.add(new DinosaurEnemy(getPositionByTileIndex(7, 43).addY(2), getPositionByTileIndex(14, 43).addY(2), Direction.RIGHT));
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(68, 35).addY(2), getPositionByTileIndex(72, 35).addY(2), Direction.LEFT));
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(54, 30).addY(2), getPositionByTileIndex(58, 30).addY(2), Direction.RIGHT));
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(67, 26).addY(2), getPositionByTileIndex(72, 26).addY(2), Direction.LEFT));
@@ -42,8 +49,8 @@ public class LevelThree extends Map {
 
         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(59, 40),  //only need to change this starting point
-                getPositionByTileIndex(65, 40),  // and this end point
+                getPositionByTileIndex(59, 40),
+                getPositionByTileIndex(65, 40),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
                 new Rectangle(0, 6,16,4),
@@ -84,10 +91,20 @@ public class LevelThree extends Map {
                 3,
                 new Rectangle(0, 6,16,4),
                 Direction.RIGHT
-        ));enhancedMapTiles.add(new HorizontalMovingPlatform(
+        ));
+        enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
                 getPositionByTileIndex(61, 21),
                 getPositionByTileIndex(64, 21),
+                TileType.JUMP_THROUGH_PLATFORM,
+                3,
+                new Rectangle(0, 6,16,4),
+                Direction.RIGHT
+        ));
+        enhancedMapTiles.add(new HorizontalMovingPlatform(
+                ImageLoader.load("GreenPlatform.png"),
+                getPositionByTileIndex(103, 43),
+                getPositionByTileIndex(105, 43),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
                 new Rectangle(0, 6,16,4),

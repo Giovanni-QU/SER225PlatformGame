@@ -1,14 +1,14 @@
 package Screens;
 
 import Engine.*;
-import Game.Game;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
+import Maps.LevelThree;
 import Maps.LevelTwo;
-import Maps.TestMap;
+import Maps.LevelOne;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
@@ -113,18 +113,24 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         switch (currentLevel) {
             case 0:
                 //TODO: Change this to desired map to start on that map
-                this.map = new TestMap();
+                this.map = new LevelOne();
                 map.reset();
                 break;
             case 1:
                 this.map = new LevelTwo();
                 map.reset();
                 break;
-                
+            case 2:
+                this.map = new LevelThree();
+                map.reset();
+                break;
         }
 
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        if (currentLevel > 0) {
+            player.unlockPowerUpOne();
+        }
         this.player.setMap(map);
         this.player.addListener(this);
         this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
@@ -163,7 +169,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 case LEVEL_WIN_MESSAGE:
                     if (screenTimer.isTimeUp()) {
                         levelClearedScreen = null;
-                        if (currentLevel > 1) {
+                        //TODO: Update this if another level is added
+                        if (currentLevel > 2) {
                             goBackToMenu();
                         } else {
                             playLevelScreenState = PlayLevelScreenState.RUNNING;

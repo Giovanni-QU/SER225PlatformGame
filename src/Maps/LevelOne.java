@@ -15,9 +15,9 @@ import Utils.Point;
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level
-public class TestMap extends Map {
+public class LevelOne extends Map {
 
-    public TestMap() {
+    public LevelOne() {
         super("test_map.txt", new CommonTileset(), new Point(1, 11));
     }
 

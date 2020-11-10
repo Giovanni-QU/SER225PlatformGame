@@ -27,6 +27,7 @@ public class Cat extends Player {
         MOVE_LEFT_KEY = Key.LEFT;
         MOVE_RIGHT_KEY = Key.RIGHT;
         CROUCH_KEY = Key.DOWN;
+        POWERUP_ONE_KEY = Key.ONE;
     }
 
     public void update() {

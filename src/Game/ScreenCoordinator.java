@@ -1,6 +1,7 @@
 package Game;
 
 import Engine.DefaultScreen;
+import Engine.GameWindow;
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
@@ -16,10 +17,15 @@ import Screens.PlayLevelScreen;
 public class ScreenCoordinator extends Screen {
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
+	private GameWindow gameWindow;
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
 	protected GameState gameState;
 	protected GameState previousGameState;
+	public ScreenCoordinator(GameWindow gameWindow) 
+	{
+		this.gameWindow = gameWindow;
+	}
 
 	public GameState getGameState() {
 		return gameState;
@@ -54,7 +60,7 @@ public class ScreenCoordinator extends Screen {
 						currentScreen = new InstructionScreen(this);
 						break;
 					case LEVEL:
-						currentScreen = new PlayLevelScreen(this);
+						currentScreen = new PlayLevelScreen(this, gameWindow);
 						break;
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);

@@ -1,6 +1,7 @@
 package Screens;
 
 import Engine.*;
+import Level.Camera;
 
 
 import Game.Game;
@@ -42,6 +43,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private Game game;
     private MusicData mD;
     protected int currentLevel = 0;
+    public static Camera cam;
 
     private boolean isGamePaused = false;
     private SpriteFont pauseLabel;
@@ -495,6 +497,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     {
 		config.WIDTH = 800;
 		config.HEIGHT = 605;
+		cam.multiplyInt = 140;
 		gameWindow.paintWindow();
 		
 		System.out.println("Config Width: " + config.WIDTH + " Config Height: " + config.HEIGHT);
@@ -505,6 +508,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		System.out.println("screen Mid");
 		config.WIDTH = 950;
 		config.HEIGHT = 705;
+		cam.multiplyInt = 240;
 		gameWindow.paintWindow();
 		
 		System.out.println("Config Width: " + config.WIDTH + " Config Height: " + config.HEIGHT);
@@ -513,6 +517,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     {
 		config.WIDTH = 1100;
 		config.HEIGHT = 710;
+		cam.multiplyInt = 310;
 		System.out.println("screen Large");
 		gameWindow.paintWindow();
 		

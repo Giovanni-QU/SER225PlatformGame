@@ -34,6 +34,7 @@ public abstract class Player extends GameObject {
     protected float jumpForce = 0;
     protected float momentumY = 0;
     protected float moveAmountX, moveAmountY;
+    public static boolean walkSoundPlayed = false;
 
     // values used to keep track of player's current state
     protected PlayerState playerState;
@@ -170,26 +171,37 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
             moveAmountX -= walkSpeed;
             System.out.println("walkSoundleft");
-            PlaySound(walk,0.25);
+            if(walkSoundPlayed == false) 
+            {
+            	playWalkSound();
+            	walkSoundPlayed = true;
+            } 
             facingDirection = Direction.LEFT;
         }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
         	System.out.println("walkSoundright");
-        	PlaySound(walk,0.25);
+        	if(walkSoundPlayed == false) 
+            {
+            	playWalkSound();
+            	walkSoundPlayed = true;
+            	
+            } 
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
             
         } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
         	
             playerState = PlayerState.STANDING;
+            walkSoundPlayed = false;
         }
 
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
+            walkSoundPlayed = false;
         }
 
         // if crouch key is pressed,
@@ -197,7 +209,12 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.CROUCHING;
         }
     }
-
+    public void playWalkSound() 
+    {
+    	File walk = new File("Walk.wav");
+    	PlaySound(walk,0.25);
+    	walkSoundPlayed = false;
+    }
     // player CROUCHING state logic
     protected void playerCrouching() {
         // sets animation to a CROUCH animation based on which way player is facing

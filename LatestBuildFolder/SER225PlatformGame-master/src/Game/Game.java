@@ -1,6 +1,8 @@
 package Game;
 
 import javax.sound.sampled.AudioInputStream;
+
+import Screens.PlayLevelScreen;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -22,11 +24,13 @@ public class Game {
 
 	public static double vol = 0.5;
 	public MusicData mD;
+	public static PlayLevelScreen pLS;
 	public static String equalizer;
 	
     public static void main(String[] args) 
     {
         new Game();
+        pLS.playTheMusic();
     }
 
     public Game() {

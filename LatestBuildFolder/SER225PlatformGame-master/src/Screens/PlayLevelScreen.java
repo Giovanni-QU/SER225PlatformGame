@@ -1,6 +1,8 @@
 package Screens;
 
 import Engine.*;
+
+
 import Game.Game;
 import Game.GameState;
 import Game.ScreenCoordinator;
@@ -21,6 +23,9 @@ import java.awt.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.swing.JOptionPane;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
@@ -48,7 +53,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected int currentSettingLevelHovered = 0;
     protected int settingsMenuItemSelected = 1;
     protected int menuItemSelected = -1;
-    public static double vol = 0.1;
+    public static double vol = 0.25;
     protected SpriteFont pauseHeader;
     protected SpriteFont settingsButton;
     protected SpriteFont mainMenuButton;
@@ -73,7 +78,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected SpriteFont aspectRatioLevel;
 
 
-    public PlayLevelScreen(ScreenCoordinator screenCoordinator, GameWindow gameWindow) {
+    public PlayLevelScreen(ScreenCoordinator screenCoordinator, GameWindow gameWindow, MusicData musicData) {
         this.screenCoordinator = screenCoordinator;
         this.gameWindow = gameWindow;
         //Pause Screen Initialization
@@ -94,6 +99,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         lowVol = new SpriteFont("Low ", 370, 245, "Comic Sans", 30, new Color (49, 207,240));
         lowVol.setOutlineColor(Color.black);
         lowVol.setOutlineThickness(3);
+        
         midVol = new SpriteFont("Medium ", 500, 245, "Comic Sans", 30, new Color (49, 207,240));
         midVol.setOutlineColor(Color.black);
         midVol.setOutlineThickness(3);
@@ -113,7 +119,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         bigScreen = new SpriteFont("Large ", 660, 370, "Comic Sans", 30, new Color (49, 207,240));
         bigScreen.setOutlineColor(Color.black);
         bigScreen.setOutlineThickness(3);
-        playTheMusic();
+       
+        
     }
 
     public void initialize() {
@@ -468,25 +475,21 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public void setVolLow() 
     {
     	System.out.println("screen vol low");
-    	vol = 0.25;
-    	playTheMusic();
-    	//mD.remakeSound(.25, clip);
-		System.out.println("Current Vol: " + game.vol);
+    	mD.setVolCall("Low");
+		System.out.println("Current Vol: " + vol);
 		
     }
     public void setVolMid() 
     {
     	System.out.println("screen vol mid");
-    	vol = 0.5;
-    	playTheMusic();
-		System.out.println("Current Vol: " + game.vol);
+    	mD.setVolCall("Mid");
+		System.out.println("Current Vol: " + vol);
     }
     public void setVolFull() 
     {
     	System.out.println("screen vol high");
-    	vol = 1;
-    	playTheMusic();
-		System.out.println("Current Vol: " + game.vol);
+    	mD.setVolCall("Full");
+		System.out.println("Current Vol: " + vol);
     }
     public void setScreenSmall() 
     {
@@ -517,11 +520,13 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		//config.setBoundsLarge();
     }
     
-    public void playTheMusic() 
+    public static void playTheMusic() 
     {
+    	
         String filePath = "MakafushigiAdventure.wav";
         MusicData musicObject = new MusicData();
         musicObject.playMusic(filePath, vol);
+        
     }
 
     @Override

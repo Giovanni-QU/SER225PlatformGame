@@ -1,6 +1,14 @@
 package Level;
 
 import Engine.Key;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import Engine.KeyLocker;
 import Engine.Keyboard;
 import GameObject.GameObject;
@@ -8,6 +16,8 @@ import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
 
+import java.applet.AudioClip;
+import java.io.File;
 import java.util.ArrayList;
 
 public abstract class Player extends GameObject {
@@ -32,6 +42,7 @@ public abstract class Player extends GameObject {
     protected AirGroundState airGroundState;
     protected AirGroundState previousAirGroundState;
     protected LevelState levelState;
+    public static float dB;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -55,8 +66,10 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
         levelState = LevelState.RUNNING;
+        File jumpSound = new File("Jump.wav");
+        File walkSound = new File("Walking on concrete sound effect YouTube.wav");
     }
-
+     
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
@@ -149,20 +162,27 @@ public abstract class Player extends GameObject {
 
     // player WALKING state logic
     protected void playerWalking() {
+    	File walk = new File("Walk.wav");
         // sets animation to a WALK animation based on which way player is facing
         currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
             moveAmountX -= walkSpeed;
+            System.out.println("walkSoundleft");
+            PlaySound(walk,0.25);
             facingDirection = Direction.LEFT;
         }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+        	System.out.println("walkSoundright");
+        	PlaySound(walk,0.25);
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
+            
         } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
+        	
             playerState = PlayerState.STANDING;
         }
 
@@ -197,12 +217,14 @@ public abstract class Player extends GameObject {
 
     // player JUMPING state logic
     protected void playerJumping() {
+    	File jump = new File("Jump.wav");
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
 
             // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
-
+            System.out.println("jump");
+            PlaySound(jump, 0.25);
             // player is set to be in air and then player is sent into the air
             airGroundState = AirGroundState.AIR;
             jumpForce = jumpHeight;
@@ -357,6 +379,27 @@ public abstract class Player extends GameObject {
             }
         }
     }
+    public static void PlaySound(File Sound, double vol) 
+    {
+    	try 
+    	{
+    		Clip clip = AudioSystem.getClip();
+    		clip.open(AudioSystem.getAudioInputStream(Sound));
+    		clip.getLevel();
+			setVol(vol,clip);
+    		clip.start();
+    	}
+    	catch (Exception e) 
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    public static void setVol(double vol, Clip clip) 
+	{
+		FloatControl gain = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+		dB = (float)(Math.log(vol)/(Math.log(10)) * 20);
+		gain.setValue(dB);
+	}
 
     public PlayerState getPlayerState() {
         return playerState;

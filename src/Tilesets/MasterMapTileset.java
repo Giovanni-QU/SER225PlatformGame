@@ -350,6 +350,239 @@ public class MasterMapTileset  extends Tileset {
 
         mapTiles.add(roofTile);
 
+        //wall
+        Frame wallFrame = new FrameBuilder(getSubImage(2, 11), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder wallTile = new MapTileBuilder(wallFrame)
+                .withTileType(TileType.PASSABLE);
+
+        mapTiles.add(wallTile);
+
+        //floor board
+        Frame floorFrame = new FrameBuilder(getSubImage(3, 0), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder floorTile = new MapTileBuilder(floorFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(floorTile);
+
+        //window
+        Frame windowFrame = new FrameBuilder(getSubImage(2, 11), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder windowTile = new MapTileBuilder(windowFrame)
+                .withTileType(TileType.PASSABLE);
+
+        mapTiles.add(windowTile);
+
+        //ceiling light
+        Frame[] lightFrames = new Frame[] {
+                new FrameBuilder(getSubImage(3, 2), 400)
+                        .withScale(tileScale)
+                        .build(),
+                new FrameBuilder(getSubImage(3, 3), 400)
+                        .withScale(tileScale)
+                        .build()
+        };
+
+        MapTileBuilder lightTile = new MapTileBuilder(lightFrames);
+
+        mapTiles.add(lightTile);
+
+        // middle table
+        Frame middleTableFrame = new FrameBuilder(getSubImage(3, 5), 0)
+                .withScale(tileScale)
+                .withBounds(0, 6, 16, 4)
+                .build();
+
+        MapTileBuilder middleTableTile = new MapTileBuilder(middleBranchFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(middleTableTile);
+
+        // table end
+        Frame tableEndFrame = new FrameBuilder(getSubImage(3, 4), 0)
+                .withScale(tileScale)
+                .withBounds(0, 6, 16, 4)
+                .build();
+
+        MapTileBuilder tableEndTile = new MapTileBuilder(tableEndFrame)
+                .withTileType(TileType.JUMP_THROUGH_PLATFORM);
+
+        mapTiles.add(tableEndTile);
+
+        // table pole
+        Frame tablePoleFrame = new FrameBuilder(getSubImage(3, 6), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder tablePoleTile = new MapTileBuilder(tablePoleFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(tablePoleTile);
+
+        // scratching pole base
+        Frame scratchPoleFrame = new FrameBuilder(getSubImage(3, 7), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder scratchPoleTile = new MapTileBuilder(scratchPoleFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(scratchPoleTile);
+
+        // scratching pole middle arm
+        Frame scratchMiddleFrame = new FrameBuilder(getSubImage(3, 9), 0)
+                .withScale(tileScale)
+                .withBounds(0, 6, 16, 4)
+                .build();
+
+        MapTileBuilder scratchMiddleTile = new MapTileBuilder(scratchMiddleFrame)
+                .withTileType(TileType.JUMP_THROUGH_PLATFORM);
+
+        mapTiles.add(scratchMiddleTile);
+
+        // scratching pole left arm
+        Frame leftScratchArmFrame = new FrameBuilder(getSubImage(3, 8), 0)
+                .withScale(tileScale)
+                .withBounds(0, 6, 16, 4)
+                .build();
+
+        MapTileBuilder leftScratchArmTile = new MapTileBuilder(leftScratchArmFrame)
+                .withTileType(TileType.JUMP_THROUGH_PLATFORM);
+
+        mapTiles.add(leftScratchArmTile);
+
+        // scratching pole right arm
+        Frame rightScratchArmFrame = new FrameBuilder(getSubImage(3, 8), 0)
+                .withScale(tileScale)
+                .withBounds(0, 6, 16, 4)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .build();
+
+        MapTileBuilder rightScratchArmTile = new MapTileBuilder(rightScratchArmFrame)
+                .withTileType(TileType.JUMP_THROUGH_PLATFORM);
+
+        mapTiles.add(rightScratchArmTile);
+
+        //scratching pole hole
+        Frame scratchHoleFrame = new FrameBuilder(getSubImage(3, 10), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder scratchHoleTile = new MapTileBuilder(scratchHoleFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(scratchHoleTile);
+
+        //bed footboard
+        Frame footBoardFrame = new FrameBuilder(getSubImage(3, 10), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder footBoardTile = new MapTileBuilder(footBoardFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(footBoardTile);
+
+        //bed middle
+        Frame bedMiddleFrame = new FrameBuilder(getSubImage(4, 0), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder bedMiddleTile = new MapTileBuilder(bedMiddleFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(bedMiddleTile);
+
+        //bed pillow
+        Frame bedPillowFrame = new FrameBuilder(getSubImage(4, 1), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder bedPillowTile = new MapTileBuilder(bedPillowFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(bedPillowTile);
+
+        //bed bottom
+        Frame bedBottomFrame = new FrameBuilder(getSubImage(4, 2), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder bedBottomTile = new MapTileBuilder(bedBottomFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(bedBottomTile);
+
+        //bed bottom left leg
+        Frame bedBottomLegLeftFrame = new FrameBuilder(getSubImage(4, 3), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder bedBottomLegLeftTile = new MapTileBuilder(bedBottomLegLeftFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(bedBottomLegLeftTile);
+
+        //bed bottom right leg
+        Frame bedBottomLegRightFrame = new FrameBuilder(getSubImage(4, 3), 0)
+                .withScale(tileScale)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .build();
+
+        MapTileBuilder bedBottomLegRightTile = new MapTileBuilder(bedBottomLegRightFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(bedBottomLegRightTile);
+
+        //door top
+        Frame doorTopFrame = new FrameBuilder(getSubImage(4, 4), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder doorTopTile = new MapTileBuilder(doorTopFrame)
+                .withTileType(TileType.PASSABLE);
+
+        mapTiles.add(doorTopTile);
+
+        //door bottom
+        Frame doorBottomFrame = new FrameBuilder(getSubImage(4, 5), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder doorBottomTile = new MapTileBuilder(doorBottomFrame)
+                .withTileType(TileType.PASSABLE);
+
+        mapTiles.add(doorBottomTile);
+
+        //tv
+        Frame tvFrame = new FrameBuilder(getSubImage(4, 6), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder tvTile = new MapTileBuilder(tvFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(tvTile);
+
+        //tv table
+        Frame tvTableFrame = new FrameBuilder(getSubImage(4, 7), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder tvTableTile = new MapTileBuilder(tvTableFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(tvTableTile);
+
+
+
         return mapTiles;
     }
 }

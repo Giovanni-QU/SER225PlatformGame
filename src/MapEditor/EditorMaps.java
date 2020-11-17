@@ -1,10 +1,7 @@
 package MapEditor;
 
 import Level.Map;
-import Maps.LevelThree;
-import Maps.LevelOne;
-import Maps.TitleScreenMap;
-import Maps.LevelTwo;
+import Maps.*;
 
 import java.util.ArrayList;
 
@@ -15,10 +12,10 @@ public class EditorMaps {
             add("TitleScreen");
             add("LevelTwo");
             add("LevelThree");
+            add("LevelFour");
         }};
     }
 
-    //TODO: Add level 4
     public static Map getMapByName(String mapName) {
         switch(mapName) {
             case "LevelOne":
@@ -29,6 +26,8 @@ public class EditorMaps {
                 return new LevelTwo();
             case "LevelThree":
                 return new LevelThree();
+            case "LevelFour":
+                return new LevelFour();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

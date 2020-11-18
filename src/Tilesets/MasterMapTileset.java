@@ -371,7 +371,7 @@ public class MasterMapTileset  extends Tileset {
         mapTiles.add(floorTile);
 
         //window
-        Frame windowFrame = new FrameBuilder(getSubImage(2, 11), 0)
+        Frame windowFrame = new FrameBuilder(getSubImage(3, 1), 0)
                 .withScale(tileScale)
                 .build();
 
@@ -400,7 +400,7 @@ public class MasterMapTileset  extends Tileset {
                 .withBounds(0, 6, 16, 4)
                 .build();
 
-        MapTileBuilder middleTableTile = new MapTileBuilder(middleBranchFrame)
+        MapTileBuilder middleTableTile = new MapTileBuilder(middleTableFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(middleTableTile);
@@ -481,7 +481,7 @@ public class MasterMapTileset  extends Tileset {
         mapTiles.add(scratchHoleTile);
 
         //bed footboard
-        Frame footBoardFrame = new FrameBuilder(getSubImage(3, 10), 0)
+        Frame footBoardFrame = new FrameBuilder(getSubImage(3, 11), 0)
                 .withScale(tileScale)
                 .build();
 

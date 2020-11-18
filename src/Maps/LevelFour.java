@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class LevelFour extends Map {
 
-    public LevelFour() { super("level_four.txt", new MasterMapTileset(), new Point(99,8)); }
+    public LevelFour() { super("level_four.txt", new MasterMapTileset(), new Point(2,18)); }
 
     @Override
     public ArrayList<Enemy> loadEnemies() {

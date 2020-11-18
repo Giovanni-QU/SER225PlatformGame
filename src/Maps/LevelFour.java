@@ -6,11 +6,9 @@ import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
-import Level.Enemy;
-import Level.EnhancedMapTile;
-import Level.Map;
+import Level.*;
 
-import Level.TileType;
+import NPCs.Walrus;
 import Tilesets.LevelTwoTileset;
 
 import Tilesets.MasterMapTileset;
@@ -35,5 +33,13 @@ public class LevelFour extends Map {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
         return enhancedMapTiles;
+    }
+
+    @Override
+    public ArrayList<NPC> loadNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
+
+
+        return npcs;
     }
 }

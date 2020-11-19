@@ -34,7 +34,7 @@ public abstract class Player extends GameObject {
     protected float jumpForce = 0;
     protected float momentumY = 0;
     protected float moveAmountX, moveAmountY;
-    public static boolean walkSoundPlayed = false;
+    public static boolean walkSoundPlayed = true;
 
     // values used to keep track of player's current state
     protected PlayerState playerState;
@@ -74,7 +74,6 @@ public abstract class Player extends GameObject {
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
-
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
             applyGravity();
@@ -145,19 +144,27 @@ public abstract class Player extends GameObject {
         currentAnimationName = facingDirection == Direction.RIGHT ? "STAND_RIGHT" : "STAND_LEFT";
 
         // if walk left or walk right key is pressed, player enters WALKING state
-        if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+        if (Keyboard.isKeyDown(MOVE_LEFT_KEY) ^ Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.WALKING;
+            //File walk = new File("Walk.wav");
+    		//PlaySoundLoop(walk,0.25);
+    		walkSoundPlayed = true;
+           // playWalkSound(true);
         }
 
         // if jump key is pressed, player enters JUMPING state
         else if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
+    		walkSoundPlayed = false;
+            //playWalkSound(false);
         }
 
         // if crouch key is pressed, player enters CROUCHING state
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
+    		walkSoundPlayed = false;
+           // playWalkSound(false);
         }
     }
 
@@ -171,37 +178,24 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
             moveAmountX -= walkSpeed;
             System.out.println("walkSoundleft");
-            if(walkSoundPlayed == false) 
-            {
-            	playWalkSound();
-            	walkSoundPlayed = true;
-            } 
             facingDirection = Direction.LEFT;
         }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
         	System.out.println("walkSoundright");
-        	if(walkSoundPlayed == false) 
-            {
-            	playWalkSound();
-            	walkSoundPlayed = true;
-            	
-            } 
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
             
         } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
         	
             playerState = PlayerState.STANDING;
-            walkSoundPlayed = false;
         }
 
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
-            walkSoundPlayed = false;
         }
 
         // if crouch key is pressed,
@@ -209,11 +203,14 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.CROUCHING;
         }
     }
-    public void playWalkSound() 
+    public void playWalkSound(boolean walkingCalled) 
     {
-    	File walk = new File("Walk.wav");
-    	PlaySound(walk,0.25);
-    	walkSoundPlayed = false;
+    	if(walkingCalled == true) 
+    	{
+    		File walk = new File("Walk.wav");
+    		PlaySoundLoop(walk,0.25);
+    		walkSoundPlayed = false;
+    	}
     }
     // player CROUCHING state logic
     protected void playerCrouching() {
@@ -241,7 +238,7 @@ public abstract class Player extends GameObject {
             // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
             System.out.println("jump");
-            PlaySound(jump, 0.25);
+            PlaySound(jump, 0.15);
             // player is set to be in air and then player is sent into the air
             airGroundState = AirGroundState.AIR;
             jumpForce = jumpHeight;
@@ -405,6 +402,32 @@ public abstract class Player extends GameObject {
     		clip.getLevel();
 			setVol(vol,clip);
     		clip.start();
+    	}
+    	catch (Exception e) 
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    public static void PlaySoundLoop(File Sound, double vol) 
+    {
+    	try 
+    	{
+    		
+    			Clip clip = AudioSystem.getClip();
+    			
+    			if(walkSoundPlayed == true) 
+        		{
+    				clip.open(AudioSystem.getAudioInputStream(Sound));
+    				clip.getLevel();
+    				setVol(vol,clip);
+    				clip.start();
+    				clip.loop(Clip.LOOP_CONTINUOUSLY);
+        		}
+    			else if(walkSoundPlayed == false) 
+    			{
+    				clip.stop();
+    				System.out.println("Stop the walk");
+    			}
     	}
     	catch (Exception e) 
     	{

@@ -2,13 +2,20 @@ package Level;
 
 import java.util.ArrayList;
 
+import Enemies.BossMouse;
+import Enemies.Cheese;
+import Enemies.Fireball;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
+import Players.Hairball;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
+import Utils.PowerState;
+import Utils.Stopwatch;
 
 public abstract class Player extends GameObject {
 	protected MapEntityStatus removed;
@@ -33,6 +40,9 @@ public abstract class Player extends GameObject {
 	protected AirGroundState airGroundState;
 	protected AirGroundState previousAirGroundState;
 	protected LevelState levelState;
+	protected PowerState powerState;
+	protected PowerState previousPowerState;
+	protected boolean unlockedPowerUpOne = false;
 
 	// classes that listen to player events can be added to this list
 	protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -43,6 +53,8 @@ public abstract class Player extends GameObject {
 	protected Key MOVE_LEFT_KEY = Key.LEFT;
 	protected Key MOVE_RIGHT_KEY = Key.RIGHT;
 	protected Key CROUCH_KEY = Key.DOWN;
+	protected Key POWERUP_ONE_KEY = Key.ONE;
+	protected Stopwatch coolDownTimer = new Stopwatch();
 
 	// if true, player cannot be hurt by enemies (good for testing)
 	protected boolean isInvincible = false;
@@ -55,6 +67,8 @@ public abstract class Player extends GameObject {
 		playerState = PlayerState.STANDING;
 		previousPlayerState = playerState;
 		levelState = LevelState.RUNNING;
+		powerState = PowerState.SAFE;
+		previousPowerState = powerState;
 	}
 
 	@Override
@@ -117,6 +131,9 @@ public abstract class Player extends GameObject {
 			break;
 		case JUMPING:
 			playerJumping();
+			break;
+		case POWERUP_ONE:
+			playerPowerUp();
 			break;
 		}
 	}
@@ -188,6 +205,36 @@ public abstract class Player extends GameObject {
 		if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
 			keyLocker.lockKey(JUMP_KEY);
 			playerState = PlayerState.JUMPING;
+		}
+	}
+
+	protected void playerPowerUp() {
+
+		if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
+			int hairballX;
+			float movementSpeed;
+			if (facingDirection == Direction.RIGHT) {
+				hairballX = Math.round(getX()) + getScaledWidth();
+				movementSpeed = 1.5f;
+			} else {
+				hairballX = Math.round(getX());
+				movementSpeed = -1.5f;
+			}
+
+			// define where hairball will spawn on the map (y location) relative to player's
+			// location
+			int hairballY = Math.round(getY()) + 20;
+
+			// create a Hairball enemy
+			Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
+
+			// add hairball enemy to the map for it to offically spawn in the level
+			map.addPowerUp(hairball);
+			powerState = PowerState.FIRE;
+		}
+
+		if (Keyboard.isKeyUp(POWERUP_ONE_KEY)) {
+			playerState = PlayerState.STANDING;
 		}
 	}
 
@@ -306,8 +353,21 @@ public abstract class Player extends GameObject {
 			}
 		}
 		if (isInvincible) {
+			if (mapEntity instanceof Cheese) {
+				levelState = LevelState.PLAYER_DEAD;
+			}
+			if (mapEntity instanceof BossMouse) {
+				levelState = LevelState.PLAYER_DEAD;
+			}
+			if (mapEntity instanceof Fireball) {
+				levelState = LevelState.PLAYER_DEAD;
+			}
 			if (mapEntity instanceof Enemy) {
-				mapEntity.mapEntityStatus = MapEntityStatus.REMOVED;
+				if (mapEntity instanceof BossMouse) {
+					levelState = LevelState.PLAYER_DEAD;
+				} else {
+					mapEntity.mapEntityStatus = MapEntityStatus.REMOVED;
+				}
 			}
 		}
 	}

@@ -114,7 +114,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         switch (currentLevel) {
             case 0:
                 //TODO: Change this to desired map to start on that map
-                this.map = new LevelFour();
+                this.map = new LevelOne();
                 map.reset();
                 break;
             case 1:
@@ -126,7 +126,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 map.reset();
                 break;
             case 3:
-                this.map = new LevelOne();
+                this.map = new LevelFour();
                 map.reset();
                 break;
         }
@@ -175,7 +175,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     if (screenTimer.isTimeUp()) {
                         levelClearedScreen = null;
                         //TODO: Update this if another level is added
-                        if (currentLevel > 2) {
+                        if (currentLevel > 3) {
                             goBackToMenu();
                         } else {
                             playLevelScreenState = PlayLevelScreenState.RUNNING;

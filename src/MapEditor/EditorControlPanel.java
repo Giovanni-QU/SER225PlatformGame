@@ -25,7 +25,8 @@ public class EditorControlPanel extends JPanel {
         setLayout(null);
         setBackground(Colors.CORNFLOWER_BLUE);
         setLocation(0, 0);
-        setSize(200, 600);
+        //TODO: MAPEDITOR WINDOW SIZE: change height
+        setSize(200, 1200);
 
         mapNames = EditorMaps.getMapNames();
 
@@ -58,13 +59,15 @@ public class EditorControlPanel extends JPanel {
         JScrollPane tilePickerScroll = new JScrollPane();
         tilePickerScroll.setViewportView(tilePicker);
         tilePickerScroll.setLocation(5, 78);
-        tilePickerScroll.setSize(190, 394);
+        //TODO: MAPEDITOR WINDOW SIZE: change height
+        tilePickerScroll.setSize(190, 1000);
         add(tilePickerScroll);
         tilePicker.setTileset(getSelectedMap(), getSelectedMap().getTileset());
 
         JButton setMapDimensionsButton = new JButton();
         setMapDimensionsButton.setSize(190, 40);
-        setMapDimensionsButton.setLocation(5, 480);
+        //TODO: MAPEDITOR WINDOW SIZE: change y
+        setMapDimensionsButton.setLocation(5, 1075);
         setMapDimensionsButton.setText("Set Map Dimensions");
         setMapDimensionsButton.addActionListener(new ActionListener() {
             @Override
@@ -77,7 +80,8 @@ public class EditorControlPanel extends JPanel {
 
         JButton saveMapButton = new JButton();
         saveMapButton.setSize(190, 40);
-        saveMapButton.setLocation(5, 525);
+        //TODO: MAPEDITOR WINDOW SIZE: change y
+        saveMapButton.setLocation(5, 1115);
         saveMapButton.setText("Save Map");
         saveMapButton.addActionListener(new ActionListener() {
             @Override

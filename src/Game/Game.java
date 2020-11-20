@@ -2,6 +2,7 @@ package Game;
 
 import Engine.GameWindow;
 import Engine.ScreenManager;
+import Screens.PlayLevelScreen;
 
 /*
  * The game starts here
@@ -18,6 +19,6 @@ public class Game {
         GameWindow gameWindow = new GameWindow();
         gameWindow.startGame();
         ScreenManager screenManager = gameWindow.getScreenManager();
-        screenManager.setCurrentScreen(new ScreenCoordinator());
+        screenManager.setCurrentScreen(new ScreenCoordinator(gameWindow));
     }
 }

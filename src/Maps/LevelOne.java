@@ -13,16 +13,15 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.TileType;
-import NPCs.Crab;
 import NPCs.Walrus;
 import Tilesets.CommonTileset;
 import Utils.Direction;
 import Utils.Point;
 
 // Represents a test map to be used in a level
-public class TestMap extends Map {
+public class LevelOne extends Map {
 
-	public TestMap() {
+	public LevelOne() {
 		super("test_map.txt", new CommonTileset(), new Point(1, 11));
 	}
 
@@ -53,7 +52,7 @@ public class TestMap extends Map {
 		ArrayList<NPC> npcs = new ArrayList<>();
 
 		npcs.add(new Walrus(getPositionByTileIndex(30, 10).subtract(new Point(0, 13)), this));
-		npcs.add(new Crab(getPositionByTileIndex(30, 10).subtract(new Point(150, -80)), this));
+
 		return npcs;
 	}
 }

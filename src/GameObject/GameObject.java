@@ -127,10 +127,9 @@ public class GameObject extends AnimatedSprite {
 	public void update() {
 		// call to animation logic
 		super.update();
-
 		// update previous position to be the current position
-		previousX = x;
-		previousY = y;
+				previousX = x;
+				previousY = y;
 	}
 
 	// move game object along the x axis
@@ -313,6 +312,22 @@ public class GameObject extends AnimatedSprite {
 	// calibrated positions and collision handling logic to work
 	public void setMap(Map map) {
 		this.map = map;
+	}
+	//getters and setters from the map, to get the boundaries
+	public int getStartBoundX() {
+		return map.getStartBoundX();
+	}
+
+	public void setStartBoundX(int xStartBoundary) {
+		map.setStartBoundX(xStartBoundary);
+	}
+
+	public int getEndBoundX() {
+		return map.getEndBoundX();
+	}
+
+	public void setEndBoundX(int xEndBoundary) {
+		map.setEndBoundX(xEndBoundary);
 	}
 
 	@Override

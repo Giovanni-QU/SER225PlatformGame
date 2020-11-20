@@ -24,14 +24,15 @@ public class Camera extends Rectangle {
 
     // current map entities that are to be included in this frame's update/draw cycle
     private ArrayList<Enemy> activeEnemies = new ArrayList<>();
+    private ArrayList<PowerUp> activePowerUps = new ArrayList<>();
     private ArrayList<EnhancedMapTile> activeEnhancedMapTiles = new ArrayList<>();
     private ArrayList<NPC> activeNPCs = new ArrayList<>();
 
     // determines how many tiles off screen an entity can be before it will be deemed inactive and not included in the update/draw cycles until it comes back in range
-    private final int UPDATE_OFF_SCREEN_RANGE = 4;
+    private final int UPDATE_OFF_SCREEN_RANGE = 10;
 
     public Camera(int startX, int startY, int tileWidth, int tileHeight, Map map) {
-        super(startX, startY, ScreenManager.getScreenWidth() / tileWidth, ScreenManager.getScreenHeight() / tileHeight);
+        super(startX, startY, ScreenManager.getScreenWidth()  / (tileWidth), ScreenManager.getScreenHeight() / (tileHeight));
         this.map = map;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
@@ -42,7 +43,7 @@ public class Camera extends Rectangle {
     // gets the tile index that the camera's x and y values are currently on (top left tile)
     // this is used to determine a starting place for the rectangle of area the camera currently contains on the map
     public Point getTileIndexByCameraPosition() {
-        int xIndex = Math.round(getX()) / tileWidth;
+        int xIndex = Math.round(getX()) / tileWidth ;
         int yIndex = Math.round(getY()) / tileHeight;
         return new Point(xIndex, yIndex);
     }
@@ -69,11 +70,21 @@ public class Camera extends Rectangle {
     // active entities are calculated each frame using the loadActiveEntity methods below
     public void updateMapEntities(Player player) {
         activeEnemies = loadActiveEnemies();
+        activePowerUps = loadActivePowerUps();
         activeEnhancedMapTiles = loadActiveEnhancedMapTiles();
         activeNPCs = loadActiveNPCs();
 
         for (Enemy enemy : activeEnemies) {
             enemy.update(player);
+        }
+
+        for (PowerUp powerUp : activePowerUps) {
+            /*
+            TODO: Possible BUG here. If there are no enemies in the camera view then the hairball stays in place.
+             */
+            for (Enemy enemy : activeEnemies) {
+                powerUp.update(enemy);
+            }
         }
 
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
@@ -112,6 +123,28 @@ public class Camera extends Rectangle {
             }
         }
         return activeEnemies;
+    }
+
+    private ArrayList<PowerUp> loadActivePowerUps() {
+        ArrayList<PowerUp> activePowerUps = new ArrayList<>();
+        for (int i = map.getPowerUps().size() - 1; i >= 0; i--) {
+            PowerUp powerUp = map.getPowerUps().get(i);
+
+            if (isMapEntityActive(powerUp)) {
+                activePowerUps.add(powerUp);
+                if (powerUp.mapEntityStatus == MapEntityStatus.INACTIVE) {
+                    powerUp.setMapEntityStatus(MapEntityStatus.ACTIVE);
+                }
+            } else if (powerUp.getMapEntityStatus() == MapEntityStatus.ACTIVE) {
+                powerUp.setMapEntityStatus(MapEntityStatus.INACTIVE);
+                if (powerUp.isRespawnable()) {
+                    powerUp.initialize();
+                }
+            } else if (powerUp.getMapEntityStatus() == MapEntityStatus.REMOVED) {
+                map.getPowerUps().remove(i);
+            }
+        }
+        return activePowerUps;
     }
 
     // determine which enhanced map tiles are active (within range of the camera)
@@ -193,8 +226,8 @@ public class Camera extends Rectangle {
     // so this does not include the extra range granted by the UPDATE_OFF_SCREEN_RANGE value
     public void drawMapTiles(GraphicsHandler graphicsHandler) {
         Point tileIndex = getTileIndexByCameraPosition();
-        for (int i = tileIndex.y - 1; i <= tileIndex.y + height + 1; i++) {
-            for (int j = tileIndex.x - 1; j <= tileIndex.x + width + 1; j++) {
+        for (int i = tileIndex.y - 1; i <= tileIndex.y + height + 110; i++) {
+            for (int j = tileIndex.x - 1; j <= tileIndex.x + width + 110; j++) {
                 MapTile tile = map.getMapTile(j, i);
                 if (tile != null) {
                     tile.draw(graphicsHandler);
@@ -213,6 +246,11 @@ public class Camera extends Rectangle {
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
             if (containsDraw(enhancedMapTile)) {
                 enhancedMapTile.draw(graphicsHandler);
+            }
+        }
+        for (PowerUp powerUp: activePowerUps) {
+            if (containsDraw(powerUp)) {
+                powerUp.draw(graphicsHandler);
             }
         }
         for (NPC npc : activeNPCs) {
@@ -251,11 +289,13 @@ public class Camera extends Rectangle {
 
     // gets end bound X position of the camera (start position is always 0)
     public float getEndBoundX() {
-        return x + (width * tileWidth) + leftoverSpaceX;
+        return x + (width * tileWidth) + leftoverSpaceX + 140;
+        //return 1000;
     }
 
     // gets end bound Y position of the camera (start position is always 0)
     public float getEndBoundY() {
-        return y + (height * tileHeight) + leftoverSpaceY;
+        return y + (height * tileHeight) + leftoverSpaceY + 140;
+        //return 1000;
     }
 }

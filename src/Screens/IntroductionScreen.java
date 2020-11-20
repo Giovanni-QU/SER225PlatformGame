@@ -21,8 +21,7 @@ public class IntroductionScreen extends Screen {
     @Override
     public void initialize() {
         /*
-        todo 
-        fix intro story
+        todo: fix intro story
          */
         background = new TitleScreenMap();
         background.setAdjustCamera(false);

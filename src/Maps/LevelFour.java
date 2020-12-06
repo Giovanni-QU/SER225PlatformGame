@@ -8,6 +8,7 @@ import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
 import Level.*;
 
+import NPCs.Human;
 import NPCs.Walrus;
 import Tilesets.LevelTwoTileset;
 
@@ -86,6 +87,8 @@ public class LevelFour extends Map {
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
+
+        npcs.add(new Human(getPositionByTileIndex(125, 14), this));
 
         return npcs;
     }

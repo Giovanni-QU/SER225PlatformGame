@@ -2,6 +2,7 @@ package Maps;
 
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
+import Enemies.LawnMowerOfDeath;
 import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
@@ -21,10 +22,14 @@ public class LevelThree extends Map {
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
+
+        // Lawnmowers
+        enemies.add(new LawnMowerOfDeath(getPositionByTileIndex(15, 42), Direction.LEFT));
+        enemies.add(new LawnMowerOfDeath(getPositionByTileIndex(26, 43), Direction.LEFT));
+        enemies.add(new LawnMowerOfDeath(getPositionByTileIndex(37, 32), Direction.LEFT));
+
         // bug enemies
         enemies.add(new BugEnemy(getPositionByTileIndex(30, 45), Direction.RIGHT));
-        enemies.add(new BugEnemy(getPositionByTileIndex(20, 44), Direction.LEFT));
-        enemies.add(new BugEnemy(getPositionByTileIndex(24, 44), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(53, 39), Direction.RIGHT));
         enemies.add(new BugEnemy(getPositionByTileIndex(78, 16), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(74, 8), Direction.RIGHT));

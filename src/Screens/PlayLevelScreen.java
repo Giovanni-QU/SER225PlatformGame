@@ -6,6 +6,7 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
+import Maps.LevelFour;
 import Maps.LevelThree;
 import Maps.LevelTwo;
 import Maps.LevelOne;
@@ -124,6 +125,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 this.map = new LevelThree();
                 map.reset();
                 break;
+            case 3:
+                this.map = new LevelFour();
+                map.reset();
+                break;
         }
 
         // setup player
@@ -170,7 +175,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     if (screenTimer.isTimeUp()) {
                         levelClearedScreen = null;
                         //TODO: Update this if another level is added
-                        if (currentLevel > 2) {
+                        if (currentLevel > 3) {
                             goBackToMenu();
                         } else {
                             playLevelScreenState = PlayLevelScreenState.RUNNING;

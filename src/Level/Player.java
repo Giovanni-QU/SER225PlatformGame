@@ -183,11 +183,6 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.STANDING;
         }
 
-//        if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) { //TODO: added this
-//            powerState = PowerState.SAFE;
-//            playerState = PlayerState.POWERUP_ONE;
-//        }
-
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);

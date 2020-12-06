@@ -14,7 +14,6 @@ import Utils.Point;
 
 import java.util.ArrayList;
 
-// Represents a test map to be used in a level
 public class LevelOne extends Map {
 
     public LevelOne() {
@@ -24,8 +23,8 @@ public class LevelOne extends Map {
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(new BugEnemy(getPositionByTileIndex(15, 9), Direction.LEFT));
-        enemies.add(new DinosaurEnemy(getPositionByTileIndex(19, 1).addY(2), getPositionByTileIndex(22, 1).addY(2), Direction.RIGHT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(15, 13), Direction.LEFT));
+        enemies.add(new DinosaurEnemy(getPositionByTileIndex(19, 5).addY(2), getPositionByTileIndex(22, 5).addY(2), Direction.RIGHT));
         return enemies;
     }
 
@@ -35,16 +34,16 @@ public class LevelOne extends Map {
 
         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(24, 6),
-                getPositionByTileIndex(27, 6),
+                getPositionByTileIndex(24, 8),
+                getPositionByTileIndex(27, 8),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
-                new Rectangle(0, 6,16,4),
+                new Rectangle(0, 6,16,8),
                 Direction.RIGHT
         ));
 
         enhancedMapTiles.add(new EndLevelBox(
-                getPositionByTileIndex(32, 7)
+                getPositionByTileIndex(32, 11)
         ));
 
         return enhancedMapTiles;
@@ -54,7 +53,7 @@ public class LevelOne extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        npcs.add(new Walrus(getPositionByTileIndex(30, 10).subtract(new Point(0, 13)), this));
+        npcs.add(new Walrus(getPositionByTileIndex(30, 14).subtract(new Point(0, 13)), this));
 
         return npcs;
     }

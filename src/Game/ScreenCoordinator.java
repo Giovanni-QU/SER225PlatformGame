@@ -1,6 +1,7 @@
 package Game;
 
 import Engine.DefaultScreen;
+
 import Engine.GameWindow;
 import Engine.GraphicsHandler;
 import Engine.Screen;
@@ -9,6 +10,7 @@ import Screens.IntroductionScreen;
 import Screens.InstructionScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+import Level.MusicData;
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
@@ -18,7 +20,8 @@ public class ScreenCoordinator extends Screen {
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
 	private GameWindow gameWindow;
-
+	private MusicData musicData;
+	private PlayLevelScreen pLS;
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
 	protected GameState gameState;
 	protected GameState previousGameState;
@@ -48,6 +51,7 @@ public class ScreenCoordinator extends Screen {
 		do {
 			// if previousGameState does not equal gameState, it means there was a change in gameState
 			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
+			
 			if (previousGameState != gameState) {
 				switch(gameState) {
 					case INTRO:
@@ -60,7 +64,7 @@ public class ScreenCoordinator extends Screen {
 						currentScreen = new InstructionScreen(this);
 						break;
 					case LEVEL:
-						currentScreen = new PlayLevelScreen(this, gameWindow);
+						currentScreen = new PlayLevelScreen(this, gameWindow, musicData);
 						break;
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);

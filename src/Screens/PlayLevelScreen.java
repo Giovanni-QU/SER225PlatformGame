@@ -3,9 +3,7 @@ package Screens;
 import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
-import Level.Map;
-import Level.Player;
-import Level.PlayerListener;
+import Level.*;
 import Maps.LevelFour;
 import Maps.LevelThree;
 import Maps.LevelTwo;
@@ -17,6 +15,13 @@ import Engine.GameWindow;
 import Screens.RebuildScreen;
 
 import java.awt.*;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.swing.JOptionPane;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
@@ -31,6 +36,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private RebuildScreen rB;
     private Config config;
     protected int currentLevel = 0;
+    private MusicData mD;
+//    private Game game;
+//    public static Camera cam;
 
     private boolean isGamePaused = false;
     private SpriteFont pauseLabel;
@@ -42,6 +50,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected int currentSettingLevelHovered = 0;
     protected int settingsMenuItemSelected = 1;
     protected int menuItemSelected = -1;
+    public static double vol = 0.25;
     protected SpriteFont pauseHeader;
     protected SpriteFont settingsButton;
     protected SpriteFont mainMenuButton;
@@ -66,7 +75,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected SpriteFont aspectRatioLevel;
 
 
-    public PlayLevelScreen(ScreenCoordinator screenCoordinator, GameWindow gameWindow) {
+    public PlayLevelScreen(ScreenCoordinator screenCoordinator, GameWindow gameWindow, MusicData musicData) {
         this.screenCoordinator = screenCoordinator;
         this.gameWindow = gameWindow;
         //Pause Screen Initialization
@@ -282,7 +291,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             if (settingsMenuItemSelected == 1 && settingsActive == true)
             {
             	volActive = true;
-            	//settingsButton.setColor(new Color(255, 215, 0));
             	smallScreen.setColor(new Color(49, 207, 240));
             	mediumScreen.setColor(new Color(49, 207, 240));
             	bigScreen.setColor(new Color(49, 207, 240));
@@ -317,7 +325,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             	lowVol.setColor(new Color(49, 207, 240));
             	midVol.setColor(new Color(49, 207, 240));
             	HighVol.setColor(new Color(49, 207, 240));
-            	//settingsButton.setColor(new Color(255, 215, 0));
             	aspectActive = true;
             	if(currentSettingLevelHovered == 0) 
             	{
@@ -356,46 +363,56 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 1)
             {
-            	if(settingsActive == false)
-            	{
-            		settingsActive = true;
-            		if (settingsMenuItemSelected == 1)
+                if(settingsActive == false)
+                {
+                    settingsActive = true;
+
+                }
+                else if(settingsActive == true)
+                {
+                    //settingsActive = false;
+                    if (settingsMenuItemSelected == 1)
                     {
-            			if(currentSettingLevelHovered == 0) 
-            			{
-            				
-            				
-            			}
-            			if(currentSettingLevelHovered == 1) 
-            			{
-            				
-            				
-            			}
-            			if(currentSettingLevelHovered == 2) 
-            			{
-            				
-            			}
+                        if(currentSettingLevelHovered == 0)
+                        {
+                            setVolLow();
+                            settingsActive = false;
+                        }
+                        if(currentSettingLevelHovered == 1)
+                        {
+                            setVolMid();
+                            settingsActive = false;
+
+                        }
+                        if(currentSettingLevelHovered == 2)
+                        {
+                            setVolFull();
+                            settingsActive = false;
+                        }
                     }
-            		else if (settingsMenuItemSelected == 2)
+                    else if (settingsMenuItemSelected == 2)
                     {
-            			if(currentSettingLevelHovered == 0) 
-            			{
-            				setScreenSmall();
-            			}
-            			if(currentSettingLevelHovered == 1) 
-            			{
-            				setScreenMid();
-            			}
-            			if(currentSettingLevelHovered == 2) 
-            			{
-            				setScreenLarge();
-            			}
+                        if(currentSettingLevelHovered == 0)
+                        {
+
+                            setScreenSmall();
+                            settingsActive = false;
+
+                            //gW.setBoundsSmall();
+                        }
+                        if(currentSettingLevelHovered == 1)
+                        {
+                            setScreenMid();
+                            settingsActive = false;
+                            //gW.setBoundsMedium();
+                        }
+                        if(currentSettingLevelHovered == 2)
+                        {
+                            setScreenLarge();
+                            settingsActive = false;
+                        }
                     }
-            	}
-            	else if(settingsActive == true)
-            	{
-            		settingsActive = false;
-            	}
+                }
             }
             else if (menuItemSelected == 2)
             {
@@ -456,6 +473,26 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         return playLevelScreenState;
     }
 
+    public void setVolLow()
+    {
+        System.out.println("screen vol low");
+        mD.setVolCall("Low");
+        System.out.println("Current Vol: " + vol);
+
+    }
+    public void setVolMid()
+    {
+        System.out.println("screen vol mid");
+        mD.setVolCall("Mid");
+        System.out.println("Current Vol: " + vol);
+    }
+    public void setVolFull()
+    {
+        System.out.println("screen vol high");
+        mD.setVolCall("Full");
+        System.out.println("Current Vol: " + vol);
+    }
+
     public void setScreenSmall() 
     {
     	screenS = true;
@@ -463,8 +500,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		screenL = false;
 		config.WIDTH = 800;
 		config.HEIGHT = 605;
+        Camera.setMultiplyInt(0);
 		gameWindow.paintWindow();
-		System.out.println("Config Width: " + config.WIDTH + " Config Height: " + config.HEIGHT);
 		
     }
     public void setScreenMid() 
@@ -472,12 +509,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     	screenS = false;
 		screenM = true;
 		screenL = false;
-		System.out.println("screen Mid");
-		
 		config.WIDTH = 950;
 		config.HEIGHT = 705;
+        Camera.setMultiplyInt(70);
 		gameWindow.paintWindow();
-		System.out.println("Config Width: " + config.WIDTH + " Config Height: " + config.HEIGHT);
     }
     public void setScreenLarge() 
     {
@@ -487,10 +522,17 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		
 		config.WIDTH = 1100;
 		config.HEIGHT = 710;
-		System.out.println("screen Large");
+		Camera.setMultiplyInt(140);
 		gameWindow.paintWindow();
-		System.out.println("Config Width: " + config.WIDTH + " Config Height: " + config.HEIGHT);
-		//config.setBoundsLarge();
+    }
+
+    public static void playTheMusic()
+    {
+
+        String filePath = "Resources/MakafushigiAdventure.wav";
+        MusicData musicObject = new MusicData();
+        musicObject.playMusic(filePath, vol);
+
     }
 
     @Override

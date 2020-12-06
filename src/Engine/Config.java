@@ -24,27 +24,5 @@ public class Config {
     // prevents Config from being instantiated -- it's my way of making a "static" class like C# has
     private Config() {}
     
-    public void setBoundsSmall() 
-    {
-    	WIDTH = WIDTHS;
-    	HEIGHT = HEIGHTS;
-    }
-    public void setBoundsMedium() 
-    {
-    	WIDTH = WIDTHM;
-    	HEIGHT = HEIGHTM;
-    }
-    public void setBoundsLarge() 
-    {
-    	WIDTH = WIDTHL;
-    	HEIGHT = HEIGHTL;
-    }
-    public int getWidthSize() 
-    {
-    	return WIDTH;
-    }
-    public int getHeightSize() 
-    {
-    	return HEIGHT;
-    }
+   
 }

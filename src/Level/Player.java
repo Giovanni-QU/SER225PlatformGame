@@ -7,6 +7,15 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Players.Hairball;
 import Utils.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.applet.AudioClip;
+import java.io.File;
 
 import java.util.ArrayList;
 
@@ -24,6 +33,9 @@ public abstract class Player extends GameObject {
     protected float jumpForce = 0;
     protected float momentumY = 0;
     protected float moveAmountX, moveAmountY;
+
+    public static boolean walkSoundPlayed = true;
+    public static float dB;
 
     // values used to keep track of player's current state
     protected PlayerState playerState;
@@ -63,6 +75,9 @@ public abstract class Player extends GameObject {
         powerState = PowerState.SAFE;
         previousPowerState = powerState;
         levelState = LevelState.RUNNING;
+
+        File jumpSound = new File("Jump.wav");
+        File walkSound = new File("Walking on concrete sound effect YouTube.wav");
     }
 
     public void update() {
@@ -144,17 +159,20 @@ public abstract class Player extends GameObject {
         // if walk left or walk right key is pressed, player enters WALKING state
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.WALKING;
+            walkSoundPlayed = true;
         }
 
         // if jump key is pressed, player enters JUMPING state
         else if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
+            walkSoundPlayed = false;
         }
 
         // if crouch key is pressed, player enters CROUCHING state
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
+            walkSoundPlayed = false;
         } else if (getUnlockedPowerUpOne()) {
             if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
                 powerState = PowerState.SAFE;
@@ -166,6 +184,7 @@ public abstract class Player extends GameObject {
 
     // player WALKING state logic
     protected void playerWalking() {
+        File walk = new File("Resources/Walk.wav");
         // sets animation to a WALK animation based on which way player is facing
         currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
 
@@ -195,6 +214,16 @@ public abstract class Player extends GameObject {
         }
     }
 
+    public void playWalkSound(boolean walkingCalled)
+    {
+        if(walkingCalled == true)
+        {
+            File walk = new File("Resources/Walk.wav");
+            PlaySoundLoop(walk,0.25);
+            walkSoundPlayed = false;
+        }
+    }
+
     // player CROUCHING state logic
     protected void playerCrouching() {
         // sets animation to a CROUCH animation based on which way player is facing
@@ -212,11 +241,6 @@ public abstract class Player extends GameObject {
         }
     }
 
-    /*
-    TODO: add to other playerlisteners simliar to standing method. this can trigger in any state, if the hairball still exists then dont shoot
-
-
-     */
     protected void playerPowerUp() {
 
         if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
@@ -248,12 +272,12 @@ public abstract class Player extends GameObject {
 
     // player JUMPING state logic
     protected void playerJumping() {
-
+        File jump = new File("Resources/Jump.wav");
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
             // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
-
+            PlaySound(jump, 0.15);
             // player is set to be in air and then player is sent into the air
             airGroundState = AirGroundState.AIR;
             jumpForce = jumpHeight;
@@ -443,6 +467,54 @@ public abstract class Player extends GameObject {
     public boolean getUnlockedPowerUpOne() { return unlockedPowerUpOne; }
 
     public void unlockPowerUpOne() { unlockedPowerUpOne = true; }
+
+    public static void PlaySound(File Sound, double vol)
+    {
+        try
+        {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(Sound));
+            clip.getLevel();
+            setVol(vol,clip);
+            clip.start();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public static void PlaySoundLoop(File Sound, double vol)
+    {
+        try
+        {
+
+            Clip clip = AudioSystem.getClip();
+
+            if(walkSoundPlayed == true)
+            {
+                clip.open(AudioSystem.getAudioInputStream(Sound));
+                clip.getLevel();
+                setVol(vol,clip);
+                clip.start();
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+            else if(walkSoundPlayed == false)
+            {
+                clip.stop();
+                System.out.println("Stop the walk");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public static void setVol(double vol, Clip clip)
+    {
+        FloatControl gain = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+        dB = (float)(Math.log(vol)/(Math.log(10)) * 20);
+        gain.setValue(dB);
+    }
 
 
 }

@@ -1,6 +1,8 @@
 package Engine;
 
 import javax.swing.*;
+import Game.Game;
+import Level.MusicData;
 import Screens.PlayLevelScreen;
 
 
@@ -10,6 +12,8 @@ import Screens.PlayLevelScreen;
  */
 public class GameWindow {
 	public static  JFrame gameWindow;
+	public static Game game;
+	public static MusicData mD;
 	private static GamePanel gamePanel;
 	private Config config;
 	private PlayLevelScreen pLS;

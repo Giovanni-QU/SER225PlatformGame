@@ -1,6 +1,17 @@
 package Game;
 
+import javax.sound.sampled.AudioInputStream;
+
+import Screens.PlayLevelScreen;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import Engine.Config;
 import Engine.GameWindow;
+import Level.MusicData;
 import Engine.ScreenManager;
 import Screens.PlayLevelScreen;
 
@@ -11,8 +22,15 @@ import Screens.PlayLevelScreen;
  */
 public class Game {
 
-    public static void main(String[] args) {
+	public static double vol = 0.5;
+	public MusicData mD;
+	public static PlayLevelScreen pLS;
+	public static String equalizer;
+	
+    public static void main(String[] args) 
+    {
         new Game();
+        pLS.playTheMusic();
     }
 
     public Game() {
@@ -21,4 +39,5 @@ public class Game {
         ScreenManager screenManager = gameWindow.getScreenManager();
         screenManager.setCurrentScreen(new ScreenCoordinator(gameWindow));
     }
+	
 }

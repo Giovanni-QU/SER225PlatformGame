@@ -30,6 +30,7 @@ public class Camera extends Rectangle {
 
     // determines how many tiles off screen an entity can be before it will be deemed inactive and not included in the update/draw cycles until it comes back in range
     private final int UPDATE_OFF_SCREEN_RANGE = 10;
+    public static int multiplyInt;
 
     public Camera(int startX, int startY, int tileWidth, int tileHeight, Map map) {
         super(startX, startY, ScreenManager.getScreenWidth()  / (tileWidth), ScreenManager.getScreenHeight() / (tileHeight));
@@ -43,7 +44,7 @@ public class Camera extends Rectangle {
     // gets the tile index that the camera's x and y values are currently on (top left tile)
     // this is used to determine a starting place for the rectangle of area the camera currently contains on the map
     public Point getTileIndexByCameraPosition() {
-        int xIndex = Math.round(getX()) / tileWidth ;
+        int xIndex = Math.round(getX()) / tileWidth;
         int yIndex = Math.round(getY()) / tileHeight;
         return new Point(xIndex, yIndex);
     }
@@ -289,11 +290,15 @@ public class Camera extends Rectangle {
 
     // gets end bound X position of the camera (start position is always 0)
     public float getEndBoundX() {
-        return x + (width * tileWidth) + leftoverSpaceX + 140;
+        return x + (width * tileWidth) + leftoverSpaceX + multiplyInt;
     }
 
     // gets end bound Y position of the camera (start position is always 0)
     public float getEndBoundY() {
         return y + (height * tileHeight) + leftoverSpaceY + 140;
+    }
+
+    public static void setMultiplyInt(int number) {
+        multiplyInt = number;
     }
 }

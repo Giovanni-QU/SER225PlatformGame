@@ -46,7 +46,7 @@ public class InstructionScreen extends Screen {
         instructionsDuck = new SpriteFont("Down Arrow to duck", 105, 325, "Comic Sans", 30, Color.white);
         instructionsDuck.setOutlineColor(Color.black);
         instructionsDuck.setOutlineThickness(3);
-        instructionsAttack = new SpriteFont("Left Shift To Attack", 105, 375, "Comic Sans", 30, Color.white);
+        instructionsAttack = new SpriteFont("Press 1 To Attack (after unlocking)", 105, 375, "Comic Sans", 30, Color.white);
         instructionsAttack.setOutlineColor(Color.black);
         instructionsAttack.setOutlineThickness(3);
         instructionsPause = new SpriteFont("P to pause the game", 105, 425, "Comic Sans", 30, Color.white);

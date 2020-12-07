@@ -2,15 +2,15 @@ package Maps;
 
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
+import Enemies.LawnMowerOfDeath;
 import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
-import Level.Enemy;
-import Level.EnhancedMapTile;
-import Level.Map;
+import Level.*;
 
-import Level.TileType;
+import NPCs.DashingDuck;
+import NPCs.Walrus;
 import Tilesets.LevelTwoTileset;
 
 import Utils.Direction;
@@ -27,7 +27,9 @@ public class LevelTwo extends Map {
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(new BugEnemy(getPositionByTileIndex(8, 18), Direction.LEFT));
+
+        enemies.add(new LawnMowerOfDeath(getPositionByTileIndex(7, 17), Direction.LEFT));
+
         enemies.add(new BugEnemy(getPositionByTileIndex(21, 18), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(29, 18), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(81, 18), Direction.LEFT));
@@ -140,5 +142,13 @@ public class LevelTwo extends Map {
         ));
 
         return enhancedMapTiles;
+    }
+
+    public ArrayList<NPC> loadNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
+
+        npcs.add(new DashingDuck(getPositionByTileIndex(10, 15).subtract(new Point(0, 13)), this));
+
+        return npcs;
     }
 }

@@ -500,7 +500,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		screenL = false;
 		config.WIDTH = 800;
 		config.HEIGHT = 605;
-        Camera.setMultiplyInt(0);
+        Camera.setMultiplyInt(140);
 		gameWindow.paintWindow();
 		
     }
@@ -511,7 +511,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		screenL = false;
 		config.WIDTH = 950;
 		config.HEIGHT = 705;
-        Camera.setMultiplyInt(70);
+        Camera.setMultiplyInt(240);
 		gameWindow.paintWindow();
     }
     public void setScreenLarge() 
@@ -522,7 +522,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		
 		config.WIDTH = 1100;
 		config.HEIGHT = 710;
-		Camera.setMultiplyInt(140);
+		Camera.setMultiplyInt(310);
 		gameWindow.paintWindow();
     }
 
